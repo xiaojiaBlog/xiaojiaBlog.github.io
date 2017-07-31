@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | Xiao Jia&#39;Blog</title>
+  <title>javascript数据类型 | Xiao Jia&#39;Blog</title>
   <meta name="author" content="Xiao Jia">
   
   <meta name="description" content="分享的总结心得~">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Hello World"/>
+  <meta property="og:title" content="javascript数据类型"/>
   <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
 
   
@@ -45,7 +45,7 @@
   <div class="container" id="container">
 	<div class="content">
 	  <div class="page-header">		
-  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">Hello World</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2014-03-16</span></h1>
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">javascript数据类型</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-07-31</span></h1>
 </div>		
 
 <div class="row page">
@@ -58,16 +58,36 @@
 	  
 
 	  <!-- content -->
-	  <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-	  
+	  <p>Javascript按存储方式区分变量类型：值类型（也称基本数据类型）和引用数据类型。</p>
+<h3 id="1-基本数据（值）类型"><a href="#1-基本数据（值）类型" class="headerlink" title="1.基本数据（值）类型"></a>1.基本数据（值）类型</h3><p>字符串型（String）；数值型（Number）;布尔型（Boolean）;未定义（undefined）；Null类型</p>
+<h3 id="2-引用数据类型"><a href="#2-引用数据类型" class="headerlink" title="2.引用数据类型"></a>2.引用数据类型</h3><p>对象（Object）类型；数组类型（Array）；函数类型（function）</p>
+<h3 id="3-区别"><a href="#3-区别" class="headerlink" title="3.区别"></a>3.区别</h3><p>基本数据类型的变量存放的是基本类型数据的实际值；而引用数据类型的变量保存对它的引用，即指针。<br><br>引用数据类型好几个变量共用一个内存块，赋值一旦被修改，互相会有影响。</p>
+<h3 id="4-需注意"><a href="#4-需注意" class="headerlink" title="4.需注意"></a>4.需注意</h3><p>(1) <strong>typeof</strong>只能区分值类型的详细类型，如果这个值是引用数据类型或者null，则区分不出来</p>
+<pre><code>typeof 95            //&quot;number&quot;
+typeof &apos;aa&apos;            //&quot;string&quot;
+typeof true            //&quot;boolean&quot;
+typeof undefined    //&quot;undefined&quot;
+typeof null            //&quot;object&quot;
+
+var o= new Object();
+typeof o            //&quot;object&quot;
+</code></pre><p>(2) <strong>null==undefined会返回true,但null===undefined会返回false。</strong>那么编码过程中，什么时候用“==”，什么时候用“===”呢？</p>
+<p>a.对象的属性是否存在    </p>
+<pre><code>if(obj.a==null){
+    //这里相当于obj.a===null||obj.a==undefined，简写形式
+    //这是jQuery源码中的推荐写法
+}
+</code></pre><p>b.函数的参数a是否存在</p>
+<pre><code>function(a,b){
+    if(a==null){
+        ...
+    }
+}
+</code></pre><font color="red">其他情况都用“===”。</font>
+
+<p>(3)怎么判断一个变量a在if语句中是true还是false?</p>
+<pre><code>!!(a);
+</code></pre><font color="red">注：</font> 0，NaN，’’，null，false，undefined–&gt;会转换为false<br><br>(4)JS中的内置函数：Object，Array，Boolean，Number，String，Function，Date，RegExp，Error…<br><font color="red">Math是内置对象，不是函数。</font>	  
 
 	  <div>
   		<center>
@@ -80,10 +100,10 @@
 	
 	
 		
-	
+			
+			
 		
-			
-			
+	
 		
 	
 	
