@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | Xiao Jia&#39;Blog</title>
+  <title>原型和原型链 | Xiao Jia&#39;Blog</title>
   <meta name="author" content="Xiao Jia">
   
   <meta name="description" content="分享的总结心得~">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Hello World"/>
+  <meta property="og:title" content="原型和原型链"/>
   <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
 
   
@@ -45,7 +45,7 @@
   <div class="container" id="container">
 	<div class="content">
 	  <div class="page-header">		
-  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">Hello World</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2014-03-16</span></h1>
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">原型和原型链</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-07-31</span></h1>
 </div>		
 
 <div class="row page">
@@ -58,16 +58,39 @@
 	  
 
 	  <!-- content -->
-	  <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-	  
+	  <h3 id="原型规则"><a href="#原型规则" class="headerlink" title="原型规则"></a>原型规则</h3><p>&gt;</p>
+<ol>
+<li>所有的引用类型变量（对象，数组、函数），都有构造函数</li>
+<li>所有引用类型变量（对象，数组、函数），都具有对象特性，即可自由扩展属性。</li>
+<li>所有引用类型变量（对象，数组、函数），都有一个隐式原型属性（<strong>proto</strong>）,属性值也是一个普通的对象。</li>
+<li><strong>所有函数</strong>都有一个显示原型属性（prototype)，属性值也是一个普通的对象。</li>
+<li><p>当试图得到一个引用类型的某个属性是，如果这个对象本身没有这个属性，那么会去它的<strong>proto</strong>（即它的构造函数的prototype）中寻找。</p>
+<h3 id="一个原型链继承的例子"><a href="#一个原型链继承的例子" class="headerlink" title="一个原型链继承的例子"></a>一个原型链继承的例子</h3><p> function Elem(id){</p>
+<pre><code>this.elem=document.getElementById(id);
+</code></pre><p> }</p>
+<p> Elme.prototype.html=function(var){</p>
+<pre><code>var elem=this.elem;
+if(var){
+    elem.innerHTML=val;
+    return this;
+}else{
+    return elem.innerHTML;
+}
+</code></pre><p> }<br> Elem.prototype.on=function(type,fn){</p>
+<pre><code>var elem=this.elem;
+elem.addEventListener(type,fn);
+</code></pre><p> }<br> //实例<br> var div1=new Elem(“div1”);<br> div1.html(“</p><p>hello</p>“);<br> div1.on(‘click’,function(){<p></p>
+<pre><code>alert(&apos;clicked&apos;);
+</code></pre><p> });</p>
+</li>
+</ol>
+<h3 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h3><p>因 typeof 只能判断值类型数据的变量类型，但如果变量的值是一个对象或者null，则判断不了。为此提供了 instanceof 操作符，其语法如下所示</p>
+<pre><code>result = variable instanceof constructor
+//例如：
+alert(person instanceof Object);
+alert(colors instanceof Array);
+alert(pattern instanceof RegExp);
+</code></pre>	  
 
 	  <div>
   		<center>
@@ -80,9 +103,7 @@
 	
 	
 		
-	
-		
-	
+			
 		
 	
 		
@@ -90,13 +111,19 @@
 			
 		
 	
+		
+			
+			
+			
+		
 	
 	
-		<li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+		<li class="prev"><a href="/2017/07/31/js_new对象/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
 	
 	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
 	
-		<li class="next disabled"><a>next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		<li class="next"><a href="/2017/07/31/js基础知识/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
 	
 </ul>
 </div>

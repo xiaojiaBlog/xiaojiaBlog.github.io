@@ -1,0 +1,240 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>new一个对象的过程 | Xiao Jia&#39;Blog</title>
+  <meta name="author" content="Xiao Jia">
+  
+  <meta name="description" content="分享的总结心得~">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="new一个对象的过程"/>
+  <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="Xiao Jia&#39;Blog" type="application/atom+xml">
+  
+  
+    <link href="/img/title.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">new一个对象的过程</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-07-31</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <p>(1) 创建一个新对象</p>
+<p>(2) 将构造函数的作用域赋给新对象，（因此this就指向了这个对象）</p>
+<p>(3) 执行代码，即对this赋值</p>
+<p>(4) 返回this</p>
+<pre><code>//例子
+function Foo(name,age){
+    this.name=name;                    //(3)
+    this.age=age;                    //(3)
+    this.class=&quot;class-1&quot;;            //(3)
+    //return this;        //默认有这一行(4)
+}
+
+var f1 = new Foo(&quot;zhangsan&quot;,23);    //(1)(2)
+</code></pre><h2 id="创建对象的方法"><a href="#创建对象的方法" class="headerlink" title="创建对象的方法"></a>创建对象的方法</h2><h3 id="对象字面量的方式"><a href="#对象字面量的方式" class="headerlink" title="对象字面量的方式"></a>对象字面量的方式</h3><pre><code>var person={firstname:&quot;Mark&quot;,lastname:&quot;Yun&quot;,age:25,eyecolor:&quot;black&quot;};
+</code></pre><h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><pre><code>//工厂模式用函数来封装以特定接口创建对象的细节
+function createPerson(name,age,job){
+    var o=new Object();
+    o.name=name;
+    o.age=age;
+    o.job=job;
+
+    o.sayHi=function(){
+        console.log(this.name);
+    };
+    return o;
+}
+
+var person1=createPerson(&quot;Nicholas&quot;,29,&quot;SoftWare Engineer&quot;);
+person1.sayHi();//Nicholas
+var person2=createPerson(&quot;Grey&quot;,27,&quot;Doctor&quot;);
+person2.sayHi();//Grey
+</code></pre><h3 id="构造函数模式"><a href="#构造函数模式" class="headerlink" title="构造函数模式"></a>构造函数模式</h3><p>如下所示，在这个例子中，Person()函数取代了createPerson()函数。我们注意到，它俩的不同之处：<br><br>（1）没有显示地创建对象<br><br>（2）直接将属性和方法赋给了this对象<br><br>（3）没有return语句</p>
+<pre><code>function Person(name,age,job){
+    this.name=name;
+    this.age=age;
+    this.job=job;
+    this.sayName=function(){
+        console.log(this.name);
+    };
+}
+
+var person1=new Person(&quot;Nicholas&quot;,29,&quot;SoftWare Engineer&quot;);
+var person2=new Person(&quot;Grey&quot;,27,&quot;Doctor&quot;);
+</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><pre><code>//利用函数的原型属性（prototype属性）
+function Person(){
+
+}
+Person.prototype.name=&quot;Nicholas&quot;;
+Person.prototype.age=29;
+Person.prototype.job=&quot;SoftWare Engineer&quot;;
+Person.prototype.sayName=function(){
+    console.log(this.name);
+}
+
+var person1=new Person();
+person1.sayName();//Nicholas
+
+var person2=new Person();
+person2.sayName();//Nicholas
+
+console.log(person1.sayName==person2.sayName);//true
+
+//可以利用isPrototypeOf()来判断对象之间是否存在原型系统与实例间的关系
+console.log(Person.prototype.isPrototypeOf(person1));//true
+</code></pre><h3 id="混合方式"><a href="#混合方式" class="headerlink" title="混合方式"></a>混合方式</h3><pre><code>//组合使用构造函数模式与原型模式，
+function Person(name,age,job){
+    this.name=name;
+    this.age=age;
+    this,job=job;
+    this.friends=[&quot;Shelby&quot;,&quot;Court&quot;];
+}
+
+Person.prototype={
+    constructor:Person,
+    sayName:function(){
+        console.log(this.name);
+    }
+}
+
+var person1=new Person(&quot;Nicholas&quot;,29,&quot;SoftWare Engineer&quot;);
+var person2=new Person(&quot;Grey&quot;,21,&quot;Doctor&quot;);
+
+person1.friends.push(&quot;Van&quot;);
+console.log(person1.friends);//[ &apos;Shelby&apos;, &apos;Court&apos;, &apos;Van&apos; ]
+console.log(person2.friends);//[ &apos;Shelby&apos;, &apos;Court&apos; ]
+
+console.log(person1.friends===person2.friends);//false
+console.log(person1.sayName===person2.sayName);//true
+</code></pre>	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+	
+	
+	
+		<li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2017/07/31/原型和原型链/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2017 Xiao Jia
+  
+      with help from <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+
+</body>
+</html>

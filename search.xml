@@ -3,6 +3,166 @@
   
     
     <entry>
+      <title><![CDATA[new一个对象的过程]]></title>
+      <url>/2017/07/31/js_new%E5%AF%B9%E8%B1%A1/</url>
+      <content type="html"><![CDATA[<p>(1) 创建一个新对象</p>
+<p>(2) 将构造函数的作用域赋给新对象，（因此this就指向了这个对象）</p>
+<p>(3) 执行代码，即对this赋值</p>
+<p>(4) 返回this</p>
+<pre><code>//例子
+function Foo(name,age){
+    this.name=name;                    //(3)
+    this.age=age;                    //(3)
+    this.class=&quot;class-1&quot;;            //(3)
+    //return this;        //默认有这一行(4)
+}
+
+var f1 = new Foo(&quot;zhangsan&quot;,23);    //(1)(2)
+</code></pre><h2 id="创建对象的方法"><a href="#创建对象的方法" class="headerlink" title="创建对象的方法"></a>创建对象的方法</h2><h3 id="对象字面量的方式"><a href="#对象字面量的方式" class="headerlink" title="对象字面量的方式"></a>对象字面量的方式</h3><pre><code>var person={firstname:&quot;Mark&quot;,lastname:&quot;Yun&quot;,age:25,eyecolor:&quot;black&quot;};
+</code></pre><h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><pre><code>//工厂模式用函数来封装以特定接口创建对象的细节
+function createPerson(name,age,job){
+    var o=new Object();
+    o.name=name;
+    o.age=age;
+    o.job=job;
+
+    o.sayHi=function(){
+        console.log(this.name);
+    };
+    return o;
+}
+
+var person1=createPerson(&quot;Nicholas&quot;,29,&quot;SoftWare Engineer&quot;);
+person1.sayHi();//Nicholas
+var person2=createPerson(&quot;Grey&quot;,27,&quot;Doctor&quot;);
+person2.sayHi();//Grey
+</code></pre><h3 id="构造函数模式"><a href="#构造函数模式" class="headerlink" title="构造函数模式"></a>构造函数模式</h3><p>如下所示，在这个例子中，Person()函数取代了createPerson()函数。我们注意到，它俩的不同之处：<br><br>（1）没有显示地创建对象<br><br>（2）直接将属性和方法赋给了this对象<br><br>（3）没有return语句</p>
+<pre><code>function Person(name,age,job){
+    this.name=name;
+    this.age=age;
+    this.job=job;
+    this.sayName=function(){
+        console.log(this.name);
+    };
+}
+
+var person1=new Person(&quot;Nicholas&quot;,29,&quot;SoftWare Engineer&quot;);
+var person2=new Person(&quot;Grey&quot;,27,&quot;Doctor&quot;);
+</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><pre><code>//利用函数的原型属性（prototype属性）
+function Person(){
+
+}
+Person.prototype.name=&quot;Nicholas&quot;;
+Person.prototype.age=29;
+Person.prototype.job=&quot;SoftWare Engineer&quot;;
+Person.prototype.sayName=function(){
+    console.log(this.name);
+}
+
+var person1=new Person();
+person1.sayName();//Nicholas
+
+var person2=new Person();
+person2.sayName();//Nicholas
+
+console.log(person1.sayName==person2.sayName);//true
+
+//可以利用isPrototypeOf()来判断对象之间是否存在原型系统与实例间的关系
+console.log(Person.prototype.isPrototypeOf(person1));//true
+</code></pre><h3 id="混合方式"><a href="#混合方式" class="headerlink" title="混合方式"></a>混合方式</h3><pre><code>//组合使用构造函数模式与原型模式，
+function Person(name,age,job){
+    this.name=name;
+    this.age=age;
+    this,job=job;
+    this.friends=[&quot;Shelby&quot;,&quot;Court&quot;];
+}
+
+Person.prototype={
+    constructor:Person,
+    sayName:function(){
+        console.log(this.name);
+    }
+}
+
+var person1=new Person(&quot;Nicholas&quot;,29,&quot;SoftWare Engineer&quot;);
+var person2=new Person(&quot;Grey&quot;,21,&quot;Doctor&quot;);
+
+person1.friends.push(&quot;Van&quot;);
+console.log(person1.friends);//[ &apos;Shelby&apos;, &apos;Court&apos;, &apos;Van&apos; ]
+console.log(person2.friends);//[ &apos;Shelby&apos;, &apos;Court&apos; ]
+
+console.log(person1.friends===person2.friends);//false
+console.log(person1.sayName===person2.sayName);//true
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> JS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> new，面试 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[原型和原型链]]></title>
+      <url>/2017/07/31/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/</url>
+      <content type="html"><![CDATA[<h3 id="原型规则"><a href="#原型规则" class="headerlink" title="原型规则"></a>原型规则</h3><p>&gt;</p>
+<ol>
+<li>所有的引用类型变量（对象，数组、函数），都有构造函数</li>
+<li>所有引用类型变量（对象，数组、函数），都具有对象特性，即可自由扩展属性。</li>
+<li>所有引用类型变量（对象，数组、函数），都有一个隐式原型属性（<strong>proto</strong>）,属性值也是一个普通的对象。</li>
+<li><strong>所有函数</strong>都有一个显示原型属性（prototype)，属性值也是一个普通的对象。</li>
+<li><p>当试图得到一个引用类型的某个属性是，如果这个对象本身没有这个属性，那么会去它的<strong>proto</strong>（即它的构造函数的prototype）中寻找。</p>
+<h3 id="一个原型链继承的例子"><a href="#一个原型链继承的例子" class="headerlink" title="一个原型链继承的例子"></a>一个原型链继承的例子</h3><p> function Elem(id){</p>
+<pre><code>this.elem=document.getElementById(id);
+</code></pre><p> }</p>
+<p> Elme.prototype.html=function(var){</p>
+<pre><code>var elem=this.elem;
+if(var){
+    elem.innerHTML=val;
+    return this;
+}else{
+    return elem.innerHTML;
+}
+</code></pre><p> }<br> Elem.prototype.on=function(type,fn){</p>
+<pre><code>var elem=this.elem;
+elem.addEventListener(type,fn);
+</code></pre><p> }<br> //实例<br> var div1=new Elem(“div1”);<br> div1.html(“</p><p>hello</p>“);<br> div1.on(‘click’,function(){<p></p>
+<pre><code>alert(&apos;clicked&apos;);
+</code></pre><p> });</p>
+</li>
+</ol>
+<h3 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h3><p>因 typeof 只能判断值类型数据的变量类型，但如果变量的值是一个对象或者null，则判断不了。为此提供了 instanceof 操作符，其语法如下所示</p>
+<pre><code>result = variable instanceof constructor
+//例如：
+alert(person instanceof Object);
+alert(colors instanceof Array);
+alert(pattern instanceof RegExp);
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> JS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> js基础知识，面试 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[javascript数据类型]]></title>
       <url>/2017/07/31/js%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
       <content type="html"><![CDATA[<p>Javascript按存储方式区分变量类型：值类型（也称基本数据类型）和引用数据类型。</p>
@@ -46,6 +206,8 @@ typeof o            //&quot;object&quot;
         <tags>
             
             <tag> js数据类型 </tag>
+            
+            <tag> 面试 </tag>
             
         </tags>
         
