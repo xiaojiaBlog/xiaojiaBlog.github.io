@@ -113,33 +113,39 @@ console.log(person1.sayName===person2.sayName);//true
     <entry>
       <title><![CDATA[原型和原型链]]></title>
       <url>/2017/07/31/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/</url>
-      <content type="html"><![CDATA[<h3 id="原型规则"><a href="#原型规则" class="headerlink" title="原型规则"></a>原型规则</h3><p>&gt;</p>
+      <content type="html"><![CDATA[<h3 id="原型规则"><a href="#原型规则" class="headerlink" title="原型规则"></a>原型规则</h3><blockquote>
 <ol>
 <li>所有的引用类型变量（对象，数组、函数），都有构造函数</li>
 <li>所有引用类型变量（对象，数组、函数），都具有对象特性，即可自由扩展属性。</li>
 <li>所有引用类型变量（对象，数组、函数），都有一个隐式原型属性（<strong>proto</strong>）,属性值也是一个普通的对象。</li>
 <li><strong>所有函数</strong>都有一个显示原型属性（prototype)，属性值也是一个普通的对象。</li>
-<li><p>当试图得到一个引用类型的某个属性是，如果这个对象本身没有这个属性，那么会去它的<strong>proto</strong>（即它的构造函数的prototype）中寻找。</p>
-<h3 id="一个原型链继承的例子"><a href="#一个原型链继承的例子" class="headerlink" title="一个原型链继承的例子"></a>一个原型链继承的例子</h3><p> function Elem(id){</p>
-<pre><code>this.elem=document.getElementById(id);
-</code></pre><p> }</p>
-<p> Elme.prototype.html=function(var){</p>
-<pre><code>var elem=this.elem;
-if(var){
-    elem.innerHTML=val;
-    return this;
-}else{
-    return elem.innerHTML;
-}
-</code></pre><p> }<br> Elem.prototype.on=function(type,fn){</p>
-<pre><code>var elem=this.elem;
-elem.addEventListener(type,fn);
-</code></pre><p> }<br> //实例<br> var div1=new Elem(“div1”);<br> div1.html(“</p><p>hello</p>“);<br> div1.on(‘click’,function(){<p></p>
-<pre><code>alert(&apos;clicked&apos;);
-</code></pre><p> });</p>
-</li>
+<li>当试图得到一个引用类型的某个属性是，如果这个对象本身没有这个属性，那么会去它的<strong>proto</strong>（即它的构造函数的prototype）中寻找。<br><br><h3 id="一个原型链继承的例子"><a href="#一个原型链继承的例子" class="headerlink" title="一个原型链继承的例子"></a>一个原型链继承的例子</h3></li>
 </ol>
-<h3 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h3><p>因 typeof 只能判断值类型数据的变量类型，但如果变量的值是一个对象或者null，则判断不了。为此提供了 instanceof 操作符，其语法如下所示</p>
+</blockquote>
+<pre><code>function Elem(id){
+    this.elem=document.getElementById(id);
+}
+
+Elme.prototype.html=function(var){
+    var elem=this.elem;
+    if(var){
+        elem.innerHTML=val;
+        return this;
+    }else{
+        return elem.innerHTML;
+    }
+}
+Elem.prototype.on=function(type,fn){
+    var elem=this.elem;
+    elem.addEventListener(type,fn);
+}
+//实例
+var div1=new Elem(&quot;div1&quot;);
+div1.html(&quot;&lt;p&gt;hello&lt;/p&gt;&quot;);
+div1.on(&apos;click&apos;,function(){
+    alert(&apos;clicked&apos;);
+});
+</code></pre><h3 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h3><p>因 typeof 只能判断值类型数据的变量类型，但如果变量的值是一个对象或者null，则判断不了。为此提供了 instanceof 操作符，其语法如下所示</p>
 <pre><code>result = variable instanceof constructor
 //例如：
 alert(person instanceof Object);
