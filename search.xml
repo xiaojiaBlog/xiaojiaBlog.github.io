@@ -3,6 +3,169 @@
   
     
     <entry>
+      <title><![CDATA[写一个能遍历对象和数组的forEach函数]]></title>
+      <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E8%83%BD%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E7%BB%84%E7%9A%84forEach%E5%87%BD%E6%95%B0/</url>
+      <content type="html"><![CDATA[<p><strong>解析</strong>：数组API中有forEach(function(item,index){})方法，但是需要注意参数的顺序；而对象是通过for(…in..)方法实现遍历。</p>
+<p><strong>小贴士</strong>：在编码实现的过程中，可以先考虑如何去调用，然后再暗要求实现函数定义。</p>
+<pre><code>function forEach(obj,fn){
+    if(obj instanceof Array){
+        obj.forEach(function(item,index){
+            fn(index,item);
+        });
+    }
+    else{
+        for(var key in obj){
+            if(obj.hasOwnProperty(key)){
+                fn(key,obj[key]);
+            }
+        }
+    }
+}
+
+//调用
+var arr=[1,2,3,4];
+forEach(arr,function(index,item){
+    console.log(index,item);
+});
+
+var obj={
+    a:100,
+    b:200,
+    c:300
+};
+forEach(obj,function(key,value){
+    console.log(key,value);
+});
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> 前端小例子 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> forEach </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[写一个生成num个在[min-max]之间的随机整数函数]]></title>
+      <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%9F%E6%88%90num%E4%B8%AA%E5%9C%A8%5Bmin-max%5D%E4%B9%8B%E9%97%B4%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B4%E6%95%B0%E5%87%BD%E6%95%B0/</url>
+      <content type="html"><![CDATA[<p><strong>解析</strong>：</p>
+<ul>
+<li>Math.random()方法返回大于等于0小于1的一个随机数；</li>
+<li>Math.ceil()方法执行向上舍入，即大于等于当前数；</li>
+<li>Math.floor()方法执行向下舍入，即小于等于当前数；</li>
+<li><p>Math.round()方法标准舍入（四舍五入）</p>
+<pre><code>function setArr(num,min,max){
+    if(max&gt;min){
+        var range=max-min;
+        var arr=[];
+        for(var i=0;i&lt;num;i++){
+            var value=Math.floor(Math.random()*range)+min;
+            arr.push(value);
+        }
+        return arr;
+    }    
+}
+
+setArr(22,0,15);
+</code></pre></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 前端小例子 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> forEach </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[异步和单线程]]></title>
+      <url>/2017/08/02/%E5%BC%82%E6%AD%A5%E5%92%8C%E5%8D%95%E7%BA%BF%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<h3 id="1-什么是异步，和同步有什么异同"><a href="#1-什么是异步，和同步有什么异同" class="headerlink" title="1.什么是异步，和同步有什么异同"></a>1.什么是异步，和同步有什么异同</h3><p>同步会阻塞代码的执行，而异步不会。 简单的例子，alert()是同步，setTimeout()是异步。</p>
+<pre><code>1.   console.log(100);
+2.   setTimeout(fucntion(){
+3.       console.log(200);
+4.   },1000);
+5.   console.log(300);
+6.   
+7.    //结果
+8.    100
+9.    300
+10.    200
+</code></pre><p><br></p>
+<pre><code>11.    console.log(100);
+12.    alert(200);//有阻塞，卡顿
+13.    console.log(300);
+</code></pre><p><strong>JavaScript引擎解析是一个单线程的过程</strong>,浏览器无论在任何时候有且只有一个线程在运行Javascript程序，如果没有异步的话，单线程会出现“卡顿”。上边例子体现了JS中单线程和异步的关系（执行过程如下）：</p>
+<p>（1）执行第1行,打印100；</p>
+<p>（2）执行第2行setTimeout后，传入setTimeout的函数会被<strong>暂存</strong>起来，<strong>不会立即执行</strong>（<font color="red">单线程的特点：不会同时执行两件事</font>）</p>
+<p>（3）执行第5行，打印300；</p>
+<p>（4）待所有程序执行完，处于空闲状态时，会立即查看又有没有暂存起来要执行的；</p>
+<p>（5）发现暂存起来的setTimeout中的函数，等待1000ms，开始执行，打印出200.</p>
+<h3 id="2-前端使用异步的场景"><a href="#2-前端使用异步的场景" class="headerlink" title="2.前端使用异步的场景"></a>2.前端使用异步的场景</h3><p>在实际开发应用中，需要等待的地方，就会用到异步。</p>
+<ol>
+<li><p>定时任务：setTimeout()、setInterval()</p>
+<pre><code>console.log(100);
+setTimeout(function(){
+    console.log(200);
+},1000)
+console.log(300);             
+</code></pre></li>
+<li><p>网络请求：ajax请求，动态<img>加载</p>
+<pre><code>//使用异步的场景——ajax请求（此例子需要完善）
+ console.log(&quot;start&quot;);
+ $.get(&apos;test-test.json&apos;,function(data){
+     console.log(data);
+ })
+ console.log(&quot;end&quot;);
+
+//网络请求图片加载
+ console.log(&quot;start&quot;);
+ var img=document.createElement(&apos;img&apos;);
+ img.onload=function(){
+     console.log(&apos;loaded&apos;);
+ }
+ img.src=&apos;http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg&apos;;        
+ console.log(&quot;end&quot;)
+</code></pre></li>
+<li><p>事件绑定</p>
+<pre><code>//事件绑定
+console.log(&quot;start&quot;);
+var btn1=document.getElementById(&quot;btn1&quot;);
+btn1.addEventListener(&apos;click&apos;,function(){
+    console.log(&quot;clicked&quot;);
+});
+console.log(&quot;end&quot;);
+</code></pre></li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> JS </category>
+            
+        </categories>
+        
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[javascript_this的几种使用场景]]></title>
       <url>/2017/08/02/this%E7%9A%84%E5%87%A0%E7%A7%8D%E4%B8%8D%E5%90%8C%E5%9C%BA%E6%99%AF/</url>
       <content type="html"><![CDATA[<p>this在定义的时候是确定不了的，只有其在函数执行的时候才能确认值。一般而言，在JavaScript中this指向函数执行时的当前对象，谁调用的就指向谁。</p>

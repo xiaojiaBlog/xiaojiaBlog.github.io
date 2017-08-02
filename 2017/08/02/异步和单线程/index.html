@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>异步和单线程 | Xiao Jia&#39;Blog</title>
+  <meta name="author" content="Xiao Jia">
+  
+  <meta name="description" content="分享的总结心得~">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="异步和单线程"/>
+  <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="Xiao Jia&#39;Blog" type="application/atom+xml">
+  
+  
+    <link href="/img/title.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">异步和单线程</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-02</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <h3 id="1-什么是异步，和同步有什么异同"><a href="#1-什么是异步，和同步有什么异同" class="headerlink" title="1.什么是异步，和同步有什么异同"></a>1.什么是异步，和同步有什么异同</h3><p>同步会阻塞代码的执行，而异步不会。 简单的例子，alert()是同步，setTimeout()是异步。</p>
+<pre><code>1.   console.log(100);
+2.   setTimeout(fucntion(){
+3.       console.log(200);
+4.   },1000);
+5.   console.log(300);
+6.   
+7.    //结果
+8.    100
+9.    300
+10.    200
+</code></pre><p><br></p>
+<pre><code>11.    console.log(100);
+12.    alert(200);//有阻塞，卡顿
+13.    console.log(300);
+</code></pre><p><strong>JavaScript引擎解析是一个单线程的过程</strong>,浏览器无论在任何时候有且只有一个线程在运行Javascript程序，如果没有异步的话，单线程会出现“卡顿”。上边例子体现了JS中单线程和异步的关系（执行过程如下）：</p>
+<p>（1）执行第1行,打印100；</p>
+<p>（2）执行第2行setTimeout后，传入setTimeout的函数会被<strong>暂存</strong>起来，<strong>不会立即执行</strong>（<font color="red">单线程的特点：不会同时执行两件事</font>）</p>
+<p>（3）执行第5行，打印300；</p>
+<p>（4）待所有程序执行完，处于空闲状态时，会立即查看又有没有暂存起来要执行的；</p>
+<p>（5）发现暂存起来的setTimeout中的函数，等待1000ms，开始执行，打印出200.</p>
+<h3 id="2-前端使用异步的场景"><a href="#2-前端使用异步的场景" class="headerlink" title="2.前端使用异步的场景"></a>2.前端使用异步的场景</h3><p>在实际开发应用中，需要等待的地方，就会用到异步。</p>
+<ol>
+<li><p>定时任务：setTimeout()、setInterval()</p>
+<pre><code>console.log(100);
+setTimeout(function(){
+    console.log(200);
+},1000)
+console.log(300);             
+</code></pre></li>
+<li><p>网络请求：ajax请求，动态<img>加载</p>
+<pre><code>//使用异步的场景——ajax请求（此例子需要完善）
+ console.log(&quot;start&quot;);
+ $.get(&apos;test-test.json&apos;,function(data){
+     console.log(data);
+ })
+ console.log(&quot;end&quot;);
+
+//网络请求图片加载
+ console.log(&quot;start&quot;);
+ var img=document.createElement(&apos;img&apos;);
+ img.onload=function(){
+     console.log(&apos;loaded&apos;);
+ }
+ img.src=&apos;http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg&apos;;        
+ console.log(&quot;end&quot;)
+</code></pre></li>
+<li><p>事件绑定</p>
+<pre><code>//事件绑定
+console.log(&quot;start&quot;);
+var btn1=document.getElementById(&quot;btn1&quot;);
+btn1.addEventListener(&apos;click&apos;,function(){
+    console.log(&quot;clicked&quot;);
+});
+console.log(&quot;end&quot;);
+</code></pre></li>
+</ol>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+	
+	
+		<li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2017/08/02/this的几种不同场景/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2017 Xiao Jia
+  
+      with help from <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+
+</body>
+</html>
