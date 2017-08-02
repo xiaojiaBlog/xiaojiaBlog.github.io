@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>js数据类型 | Xiao Jia&#39;Blog</title>
+  <title>javascript_this的几种使用场景 | Xiao Jia&#39;Blog</title>
   <meta name="author" content="Xiao Jia">
   
   <meta name="description" content="分享的总结心得~">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="javascript_this的几种使用场景"/>
   <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
 
   
@@ -44,104 +44,118 @@
 <body id="body" data-spy="scroll" data-target=".toc">
   <div class="container" id="container">
 	<div class="content">
-	  <div class="page-header">
-  <h1><a class="brand" href="#">Xiao Jia&#39;Blog</a></h1>
-</div>
-
-
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">javascript_this的几种使用场景</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-02</span></h1>
+</div>		
 
 <div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
 	<div class="col-md-12">
-        <input type="text" id="local-search-input" name="q" results="0" placeholder="search notes..." class="st-search-input st-default-search-input form-control" style="margin-bottom:1em"/>
-        <div id="local-search-result"></div>
-		<div class="panel-group" id="notebook">
+	  
+
+	  <!-- content -->
+	  <p>this在定义的时候是确定不了的，只有其在函数执行的时候才能确认值。一般而言，在JavaScript中this指向函数执行时的当前对象，谁调用的就指向谁。</p>
+<ol>
+<li><p>作为构造函数调用，this 指代new 出的对象</p>
+<pre><code>function Foo(name){
+    //this={};
+    this.name=name;
+    //return this;
+}
+var f=new Foo(&apos;zhangsan&apos;);
+</code></pre></li>
+<li><p>作为对象属性方法调用，this 指代上级对象</p>
+<pre><code>var obj={
+    name:&apos;A&apos;,
+    printName:function(){
+        name:&apos;B&apos;;
+        console.log(this.name);
+    }
+}
+
+obj.printName();
+</code></pre></li>
+<li><p>作为普通对象函数执行，this指代全局对象</p>
+<pre><code>function fn(){
+    console.log(this);//this===window
+}
+
+fn();
+</code></pre></li>
+<li><p>在call,apply,bind中使用，此方法的第一个参数为改变后调用这个函数的对象，this指代第一个参数</p>
+<pre><code>function fn1(name){
+    alert(name);
+    console.log(this);
+}
+
+fn1.call({x:100},&quot;zhangsan&quot;);//这时fn1中的this就是{x:100}
+
+fn1.apply({x:100},[&quot;zhangsan&quot;,20]);//这时fn1中的this就是{x:100}
+
+//bind使用时需要是函数表达式的形式
+var fn3 = function (name,age){
+    alert(name);
+    console.log(this);
+}.bind({y:200})//这时fn3中的this是{y:200}
+fn3(&apos;zhangsan&apos;,20);
+</code></pre></li>
+</ol>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
 			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a class="panel-title" data-toggle="collapse" data-parent="#notebook" href="#JS">
-						<i class="fa fa-folder"></i> JS		  
-				</div>
-				
-				    <div id="JS" class="panel-collapse collapse in">
-				
-						<div class="panel-body">
-							<ul class="post">                                
-								
-								    
-								        <li class="post-list-item"><a href="/2017/08/02/this的几种不同场景/">javascript_this的几种使用场景</a></li>
-								    
-								
-								    
-								        <li class="post-list-item"><a href="/2017/08/02/javascript_闭包/">作用域和闭包</a></li>
-								    
-								
-								    
-								        <li class="post-list-item"><a href="/2017/07/31/js_new对象/">new一个对象的过程</a></li>
-								    
-								
-								    
-								        <li class="post-list-item"><a href="/2017/07/31/原型和原型链/">原型和原型链</a></li>
-								    
-								
-								    
-								        <li class="post-list-item"><a href="/2017/07/31/js基础知识/">javascript数据类型</a></li>
-								    
-								
-								    
-								
-							</ul>
-						</div>
-					</div>
-			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a class="panel-title" data-toggle="collapse" data-parent="#notebook" href="#随笔">
-						<i class="fa fa-folder"></i> 随笔		  
-				</div>
-				
-				    <div id="随笔" class="panel-collapse collapse in">
-				
-						<div class="panel-body">
-							<ul class="post">                                
-								
-								    
-								
-								    
-								
-								    
-								
-								    
-								
-								    
-								
-								    
-								        <li class="post-list-item"><a href="/2014/03/16/hello-world/">Hello World</a></li>
-								    
-								
-							</ul>
-						</div>
-					</div>
-			</div>
+		
+	
+		
 			
 			
 			
+		
 			
+		
+	
+		
 			
+		
+	
+		
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		</div><!-- accordion -->
-	</div>
+		
+	
+		
+	
+	
+	
+		<li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2017/08/02/javascript_闭包/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
 </div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
 
 	</div>
   </div>

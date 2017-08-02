@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>作用域和闭包 | Xiao Jia&#39;Blog</title>
+  <meta name="author" content="Xiao Jia">
+  
+  <meta name="description" content="分享的总结心得~">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="作用域和闭包"/>
+  <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="Xiao Jia&#39;Blog" type="application/atom+xml">
+  
+  
+    <link href="/img/title.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">作用域和闭包</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-02</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <p>闭包是指有权访问另一个函数作用域中的变量的函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。</p>
+<p>闭包的使用场景：</p>
+<ul>
+<li>函数作为返回值</li>
+<li>函数作为参数传递</li>
+</ul>
+<h2 id="javascript中变量的作用域"><a href="#javascript中变量的作用域" class="headerlink" title="javascript中变量的作用域"></a>javascript中变量的作用域</h2><p>要理解闭包，首先必须理解Javascript特殊的变量作用域。JS中无块级作用域，只有函数作用域和全局作用域。</p>
+<pre><code>if(true){
+    var color=&quot;blue&quot;;
+}
+
+console.log(color);//&quot;blue&quot;-&gt;因为对JavaScript来说，没有块级作用域，所以不会报错
+</code></pre><p>1.执行上下文 </p>
+<p>全局作用域：在一段&lt;script&gt;中，在执行之前回把函数的声明和变量的声明提到最前面。</p>
+<pre><code>console(a);//undefined
+var a=10;
+</code></pre><p>函数作用域：在函数之前之前，函数中也会将变量和函数的声明提到函数中的前面。</p>
+<font color="red">注：函数声明和函数表达式不同。</font>
+
+<pre><code>fn();//不会报错
+function fn(){
+    //声明
+}
+</code></pre><p><br></p>
+<pre><code>fu()；//会报错
+var fn=function(){
+    //表达式
+}；
+</code></pre><p>区别：函数声明在JS解析时进行函数<strong>提升</strong>，因此在同一个作用域内，不管函数声明在哪里定义，该函数都可以进行调用。而函数表达式的值是在JS运行时确定，并且在表达式赋值完成后，该函数才能调用。</p>
+<p>2.作用域链</p>
+<p>​ <strong>作用域链</strong>，是由当前环境与上层环境的一系列变量对象组成，它保证了当前执行环境对符合访问权限的变量和函数的有序访问。<br><br>体现在自由变量（即在当前作用域中没有定义的变量）的值要去其父作用域中找。<strong>父作用域</strong>是指定义它的作用域，而不是执行它的作用域。</p>
+<h2 id="闭包的用途"><a href="#闭包的用途" class="headerlink" title="闭包的用途"></a>闭包的用途</h2><p>实际开发过程中，闭包用来封装变量，收敛权限。</p>
+<p>（1）使用闭包可以在javascript中模仿块级作用域。</p>
+<p>创建并立即调用一个函数，这样既可以执行其中的代码，又不会在内存中留下对该函数的引用。</p>
+<p>结果就是函数内部的所有变量都会被立即销毁——除非将某些变量赋值给了包含作用域（即外部作用域）中的变量。</p>
+<pre><code>//创建10个&lt;a&gt;标签的点击的时候弹出对应的序号
+var i;
+for(i=0;i&lt;10;i++){//自执行函数
+    (function(i){
+        //i函数作用域
+        var a=document.createElement(&apos;a&apos;);
+        a.innerHTML=i+&quot;&lt;br&gt;&quot;;
+        a.addEventListener(&apos;click&apos;,function(e){
+            e.preventDefault();//阻止a标签的默认事件
+            alert(i);//i是自由变量，需要去父作用域获取值，此处无块级作用域，所以i是全局作用域，最后弹出无论点击哪个都是10
+        });
+        document.body.appendChild(a);
+    })(i)
+}
+
+//自执行函数：就是不用调用，只要定义完成，立即执行的函数
+</code></pre><p>(2) 用于在对象中创建私有变量。</p>
+<ul>
+<li><p>即使JavaScript中没有正式的私有对象属性的概念，但可以使用闭包来实现公有方法，而通过公有方法可以访问在包含作用域中定义的变量</p>
+</li>
+<li><p>有权访问私有变量的公有方法叫做特权方法</p>
+</li>
+</ul>
+<p>如下所示，在isFirstLoad 函数外面，根本不能修改掉_list 的值</p>
+<pre><code>function isFirstLoad(){
+    var _list=[]; 
+    return function(id){
+        if(_list.indexOf(id)&gt;=0){
+            return false;    
+        }
+        else{
+            _list.push(id);
+            return true;
+        }
+    }
+}
+
+var firstLoad=isFirstLoad();
+firstLoad(10);//true
+firstLoad(10);//false
+firstLoad(20);//true
+firstLoad(20);//false
+</code></pre><h2 id="闭包中的问题"><a href="#闭包中的问题" class="headerlink" title="闭包中的问题"></a>闭包中的问题</h2><p>1）由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。</p>
+<p>2）闭包会在父函数外部，改变父函数内部变量的值。所以，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值。 </p>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2017/08/02/this的几种不同场景/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2017/07/31/js_new对象/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2017 Xiao Jia
+  
+      with help from <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+
+</body>
+</html>

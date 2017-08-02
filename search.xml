@@ -3,6 +3,173 @@
   
     
     <entry>
+      <title><![CDATA[javascript_this的几种使用场景]]></title>
+      <url>/2017/08/02/this%E7%9A%84%E5%87%A0%E7%A7%8D%E4%B8%8D%E5%90%8C%E5%9C%BA%E6%99%AF/</url>
+      <content type="html"><![CDATA[<p>this在定义的时候是确定不了的，只有其在函数执行的时候才能确认值。一般而言，在JavaScript中this指向函数执行时的当前对象，谁调用的就指向谁。</p>
+<ol>
+<li><p>作为构造函数调用，this 指代new 出的对象</p>
+<pre><code>function Foo(name){
+    //this={};
+    this.name=name;
+    //return this;
+}
+var f=new Foo(&apos;zhangsan&apos;);
+</code></pre></li>
+<li><p>作为对象属性方法调用，this 指代上级对象</p>
+<pre><code>var obj={
+    name:&apos;A&apos;,
+    printName:function(){
+        name:&apos;B&apos;;
+        console.log(this.name);
+    }
+}
+
+obj.printName();
+</code></pre></li>
+<li><p>作为普通对象函数执行，this指代全局对象</p>
+<pre><code>function fn(){
+    console.log(this);//this===window
+}
+
+fn();
+</code></pre></li>
+<li><p>在call,apply,bind中使用，此方法的第一个参数为改变后调用这个函数的对象，this指代第一个参数</p>
+<pre><code>function fn1(name){
+    alert(name);
+    console.log(this);
+}
+
+fn1.call({x:100},&quot;zhangsan&quot;);//这时fn1中的this就是{x:100}
+
+fn1.apply({x:100},[&quot;zhangsan&quot;,20]);//这时fn1中的this就是{x:100}
+
+//bind使用时需要是函数表达式的形式
+var fn3 = function (name,age){
+    alert(name);
+    console.log(this);
+}.bind({y:200})//这时fn3中的this是{y:200}
+fn3(&apos;zhangsan&apos;,20);
+</code></pre></li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> JS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> this </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[作用域和闭包]]></title>
+      <url>/2017/08/02/javascript_%E9%97%AD%E5%8C%85/</url>
+      <content type="html"><![CDATA[<p>闭包是指有权访问另一个函数作用域中的变量的函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。</p>
+<p>闭包的使用场景：</p>
+<ul>
+<li>函数作为返回值</li>
+<li>函数作为参数传递</li>
+</ul>
+<h2 id="javascript中变量的作用域"><a href="#javascript中变量的作用域" class="headerlink" title="javascript中变量的作用域"></a>javascript中变量的作用域</h2><p>要理解闭包，首先必须理解Javascript特殊的变量作用域。JS中无块级作用域，只有函数作用域和全局作用域。</p>
+<pre><code>if(true){
+    var color=&quot;blue&quot;;
+}
+
+console.log(color);//&quot;blue&quot;-&gt;因为对JavaScript来说，没有块级作用域，所以不会报错
+</code></pre><p>1.执行上下文 </p>
+<p>全局作用域：在一段&lt;script&gt;中，在执行之前回把函数的声明和变量的声明提到最前面。</p>
+<pre><code>console(a);//undefined
+var a=10;
+</code></pre><p>函数作用域：在函数之前之前，函数中也会将变量和函数的声明提到函数中的前面。</p>
+<font color="red">注：函数声明和函数表达式不同。</font>
+
+<pre><code>fn();//不会报错
+function fn(){
+    //声明
+}
+</code></pre><p><br></p>
+<pre><code>fu()；//会报错
+var fn=function(){
+    //表达式
+}；
+</code></pre><p>区别：函数声明在JS解析时进行函数<strong>提升</strong>，因此在同一个作用域内，不管函数声明在哪里定义，该函数都可以进行调用。而函数表达式的值是在JS运行时确定，并且在表达式赋值完成后，该函数才能调用。</p>
+<p>2.作用域链</p>
+<p>​ <strong>作用域链</strong>，是由当前环境与上层环境的一系列变量对象组成，它保证了当前执行环境对符合访问权限的变量和函数的有序访问。<br><br>体现在自由变量（即在当前作用域中没有定义的变量）的值要去其父作用域中找。<strong>父作用域</strong>是指定义它的作用域，而不是执行它的作用域。</p>
+<h2 id="闭包的用途"><a href="#闭包的用途" class="headerlink" title="闭包的用途"></a>闭包的用途</h2><p>实际开发过程中，闭包用来封装变量，收敛权限。</p>
+<p>（1）使用闭包可以在javascript中模仿块级作用域。</p>
+<p>创建并立即调用一个函数，这样既可以执行其中的代码，又不会在内存中留下对该函数的引用。</p>
+<p>结果就是函数内部的所有变量都会被立即销毁——除非将某些变量赋值给了包含作用域（即外部作用域）中的变量。</p>
+<pre><code>//创建10个&lt;a&gt;标签的点击的时候弹出对应的序号
+var i;
+for(i=0;i&lt;10;i++){//自执行函数
+    (function(i){
+        //i函数作用域
+        var a=document.createElement(&apos;a&apos;);
+        a.innerHTML=i+&quot;&lt;br&gt;&quot;;
+        a.addEventListener(&apos;click&apos;,function(e){
+            e.preventDefault();//阻止a标签的默认事件
+            alert(i);//i是自由变量，需要去父作用域获取值，此处无块级作用域，所以i是全局作用域，最后弹出无论点击哪个都是10
+        });
+        document.body.appendChild(a);
+    })(i)
+}
+
+//自执行函数：就是不用调用，只要定义完成，立即执行的函数
+</code></pre><p>(2) 用于在对象中创建私有变量。</p>
+<ul>
+<li><p>即使JavaScript中没有正式的私有对象属性的概念，但可以使用闭包来实现公有方法，而通过公有方法可以访问在包含作用域中定义的变量</p>
+</li>
+<li><p>有权访问私有变量的公有方法叫做特权方法</p>
+</li>
+</ul>
+<p>如下所示，在isFirstLoad 函数外面，根本不能修改掉_list 的值</p>
+<pre><code>function isFirstLoad(){
+    var _list=[]; 
+    return function(id){
+        if(_list.indexOf(id)&gt;=0){
+            return false;    
+        }
+        else{
+            _list.push(id);
+            return true;
+        }
+    }
+}
+
+var firstLoad=isFirstLoad();
+firstLoad(10);//true
+firstLoad(10);//false
+firstLoad(20);//true
+firstLoad(20);//false
+</code></pre><h2 id="闭包中的问题"><a href="#闭包中的问题" class="headerlink" title="闭包中的问题"></a>闭包中的问题</h2><p>1）由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。</p>
+<p>2）闭包会在父函数外部，改变父函数内部变量的值。所以，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值。 </p>
+]]></content>
+      
+        <categories>
+            
+            <category> JS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+            <tag> 闭包 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[new一个对象的过程]]></title>
       <url>/2017/07/31/js_new%E5%AF%B9%E8%B1%A1/</url>
       <content type="html"><![CDATA[<p>(1) 创建一个新对象</p>
@@ -117,11 +284,15 @@ console.log(person1.sayName===person2.sayName);//true
 <ol>
 <li>所有的引用类型变量（对象，数组、函数），都有构造函数</li>
 <li>所有引用类型变量（对象，数组、函数），都具有对象特性，即可自由扩展属性。</li>
-<li>所有引用类型变量（对象，数组、函数），都有一个隐式原型属性（<strong>proto</strong>）,属性值也是一个普通的对象。</li>
+<li>所有引用类型变量（对象，数组、函数），都有一个隐式原型属性（__proto__）,属性值也是一个普通的对象。</li>
 <li><strong>所有函数</strong>都有一个显示原型属性（prototype)，属性值也是一个普通的对象。</li>
-<li>当试图得到一个引用类型的某个属性是，如果这个对象本身没有这个属性，那么会去它的<strong>proto</strong>（即它的构造函数的prototype）中寻找。</li>
+<li>当试图得到一个引用类型的某个属性是，如果这个对象本身没有这个属性，那么会去它的__proto__（即它的构造函数的prototype）中寻找。</li>
 </ol>
 </blockquote>
+<h4 id="访问一个对象的属性过程体现了原型链规则"><a href="#访问一个对象的属性过程体现了原型链规则" class="headerlink" title="访问一个对象的属性过程体现了原型链规则"></a>访问一个对象的属性过程体现了原型链规则</h4><p>访问一个对象的属性时，先在基本属性中查找，如果没有，再沿着__proto__这条链向上找，这就是原型链。<br></p>
+<p>​ 在执行代码之前，把将要用到的所有的变量都事先拿出来，有的直接赋值了，有的先用undefined占个空——执行上下文环境。<br></p>
+<p>​ <strong>作用域链</strong>，是由当前环境与上层环境的一系列变量对象组成，它保证了当前执行环境对符合访问权限的变量和函数的有序访问。<br></p>
+<p>​ 每一个对象都会在内部链接到另一个对象(该对象的原型对象)，该对象有一个原型prototype，当访问对象的属性或是方法的时候，不仅仅会在原对象上查找，还会顺着原型链在原型对象的原型链上查找，直到查到null(所有原型链的顶层)为止。原型是JavaScript实现继承的基础，new关键字做的主要的事情就是将实例对象的__proto__属性指向原型对象的prototype。</p>
 <h3 id="一个原型链继承的例子"><a href="#一个原型链继承的例子" class="headerlink" title="一个原型链继承的例子"></a>一个原型链继承的例子</h3><pre><code>function Elem(id){
     this.elem=document.getElementById(id);
 }
@@ -211,9 +382,9 @@ typeof o            //&quot;object&quot;
         
         <tags>
             
-            <tag> js数据类型 </tag>
-            
             <tag> 面试 </tag>
+            
+            <tag> js数据类型 </tag>
             
         </tags>
         
