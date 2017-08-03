@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>本地存储 | Xiao Jia&#39;Blog</title>
+  <meta name="author" content="Xiao Jia">
+  
+  <meta name="description" content="分享的总结心得~">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="本地存储"/>
+  <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="Xiao Jia&#39;Blog" type="application/atom+xml">
+  
+  
+    <link href="/img/title.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">本地存储</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-03</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <h1 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h1><p>cookie本身用于客户端和服务器端的通信。但是它有本地存储的功能呢个，于是就被借用了。</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><pre><code>document.cookie=&apos;属性名=属性值&apos;    存储
+document.cookie                  获取(获取所有的)
+</code></pre><h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ol>
+<li>存储量太小，只有4KB</li>
+<li>所有http请求都带着，会影响获取资源的效率</li>
+<li>API简单，需要封装才能用，<code>document.cookie=...</code>使用起来比较麻烦<h1 id="localStorage-和-sessionStorage"><a href="#localStorage-和-sessionStorage" class="headerlink" title="localStorage 和 sessionStorage"></a>localStorage 和 sessionStorage</h1></li>
+<li>HTML5专门为存储而设计，最大容量5M；</li>
+<li><p>API简单易用：</p>
+<pre><code>设置增加:localStorage.setItem(&apos;属性名&apos;,&apos;属性值&apos;)
+获取指定:localStorage.getItem(&apos;属性名&apos;)
+
+设置增加:sessionStorage.setItem(&apos;属性名&apos;,&apos;属性值&apos;)
+获取指定:sessionStorage.getItem(&apos;属性名&apos;)
+</code></pre><h3 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h3><p>sessionStorage 和 localStorage 就一个不同的地方， <strong>sessionStorage数据</strong>的存储仅特定于某个会话中，也就是说数据<strong>只保持到浏览器关闭，</strong>当浏览器关闭后重新打开这个页面时， 之前的存储已经被清除。而 <strong>localStorage 是一个持久化的存储，它并不局限于会话</strong>。</p>
+</li>
+</ol>
+<p>注：在ios safari隐藏模式下，localStorage.getItem会报错，建议统一使用try-catch封装。</p>
+<h1 id="区别总结"><a href="#区别总结" class="headerlink" title="区别总结"></a>区别总结</h1><ul>
+<li>容量：cookie:4KB<ul>
+<li>sessionStorage和localStorage：5M    </li>
+</ul>
+</li>
+<li>是否会携带到http请求中：cookie会，因其本身用于客户端和服务器通信<ul>
+<li>sessionStorage和localStorage：不会，只用于存储</li>
+</ul>
+</li>
+<li>API易用性：cookie:<code>document.cookie</code>需封装才能使用<ul>
+<li>sessionStorage和localStorage：<code>.setItem(key,value); ``.getItem(key);</code></li>
+</ul>
+</li>
+</ul>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2017/08/03/模块化/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2017/08/03/jsonp实现跨域/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2017 Xiao Jia
+  
+      with help from <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+
+</body>
+</html>

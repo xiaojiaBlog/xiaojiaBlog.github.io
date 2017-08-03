@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>性能优化 | Xiao Jia&#39;Blog</title>
+  <meta name="author" content="Xiao Jia">
+  
+  <meta name="description" content="分享的总结心得~">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="性能优化"/>
+  <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="Xiao Jia&#39;Blog" type="application/atom+xml">
+  
+  
+    <link href="/img/title.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">性能优化</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-03</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <h1 id="前端优化的原则"><a href="#前端优化的原则" class="headerlink" title="前端优化的原则"></a>前端优化的原则</h1><ul>
+<li>多使用内存、缓存或者其他方法</li>
+<li>减少CPU计算，减少网络请求<h1 id="从哪里入手"><a href="#从哪里入手" class="headerlink" title="从哪里入手"></a>从哪里入手</h1></li>
+</ul>
+<ol>
+<li>加载页面和静态资源</li>
+<li>页面渲染<h2 id="1-加载页面和静态资源"><a href="#1-加载页面和静态资源" class="headerlink" title="1.加载页面和静态资源"></a>1.加载页面和静态资源</h2>（1）静态资源的压缩合并（减少资源请求）</li>
+</ol>
+<p>（2）合理利用静态资源缓存（减少请求）–&gt;通过连接名称控制缓存；只有内容改变时，链接名称才会改变</p>
+<p>（3）使用CDN让资源加载更快（不同地域的资源优化）</p>
+<p>（4）使用SSR(服务器端渲染)后端渲染，数据直接输入HTML中（而不是我们用的，现价在HTML,再用Ajax请求，把数据拿过来）</p>
+<h2 id="2-渲染优化"><a href="#2-渲染优化" class="headerlink" title="2.渲染优化"></a>2.渲染优化</h2><p>（1）CSS放前面，JS放后面</p>
+<p>（2）懒加载（图片懒加载，下拉加载更多）</p>
+<pre><code>&lt;!--先给页面img标签放一个比较小，或者缓存中有的图片--&gt;
+&lt;img id=&quot;img1&quot; src=&quot;previous.png&quot; data-realsrc=&quot;abc.png&quot;/&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    var img1=document.getElementById(&quot;img1&quot;);//当真实用到时，再加载真正的图片
+    img1.src=img1.getAttribute(&quot;data-realsrc&quot;);
+&lt;/script&gt;
+</code></pre><p>（3）减少DOM查询，对DOM查询做缓存</p>
+<p>循环时，将DOM查询一次查出，赋值给变量（缓存）</p>
+<p>（4）减少DOM操作，多个操作尽量合并在一起执行</p>
+<p>如：使用创建一个片段：createDocumentFragment(),它里边的appendChild()不触发DOM操作</p>
+<p>（5）事件节流</p>
+<p>如：快速操作的时候，不触发事件；停下来的时候，再触发<br>例：</p>
+<pre><code>var textarea=document.getElementById(&quot;textarea&quot;);
+var timeoutId;
+textarea.addEventListener(&apos;keyup&apos;,function(){
+    if(timeoutId){
+        clearTimeout(timeoutId)
+    }
+    timeoutId=setTimeout(function(){//事件节流：体现在当时间间隔超过100ms以上未触发keyups时，进行事件操作
+        //触发change事件
+    }，100)
+});
+</code></pre><p>（6）尽早执行操作（如：DOMContentLoaded）</p>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2017/08/03/JS的哪些操作会造成内存泄漏/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2017/08/03/页面渲染过程/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2017 Xiao Jia
+  
+      with help from <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+
+</body>
+</html>

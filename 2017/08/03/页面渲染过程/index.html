@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>页面渲染过程 | Xiao Jia&#39;Blog</title>
+  <meta name="author" content="Xiao Jia">
+  
+  <meta name="description" content="分享的总结心得~">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="页面渲染过程"/>
+  <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="Xiao Jia&#39;Blog" type="application/atom+xml">
+  
+  
+    <link href="/img/title.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">页面渲染过程</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-03</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <h1 id="渲染过程"><a href="#渲染过程" class="headerlink" title="渲染过程"></a>渲染过程</h1><h2 id="1-加载资源的形式："><a href="#1-加载资源的形式：" class="headerlink" title="1.加载资源的形式："></a>1.加载资源的形式：</h2><ul>
+<li><p>输入url（或跳转页面）加载html——&gt;(<strong>加载页面</strong>)</p>
+</li>
+<li><p>加载html中的<strong>静态资源</strong>——&gt;(加载js,css,图片，视频)</p>
+<h2 id="2-加载一个资源的过程（从输入url到获取html的过程）"><a href="#2-加载一个资源的过程（从输入url到获取html的过程）" class="headerlink" title="2.加载一个资源的过程（从输入url到获取html的过程）"></a>2.加载一个资源的过程（从输入url到获取html的过程）</h2><p>（1）浏览器根据DNS服务器得到域名的IP地址</p>
+</li>
+</ul>
+<p>（2）向这个IP对应的机器发送http（https）请求</p>
+<p>（3）服务器收到，处理并返回http(…)请求</p>
+<p>（4）浏览器得到返回内容</p>
+<h2 id="3-浏览器渲染页面的过程"><a href="#3-浏览器渲染页面的过程" class="headerlink" title="3.浏览器渲染页面的过程"></a>3.浏览器渲染页面的过程</h2><p>（1）根据HTML结构生成DOM树</p>
+<p>（2）根据CSS生成CSSOM（结构化的CSS）</p>
+<p>（3）将DOM和CSSOM整合形成RenderTree(渲染树)</p>
+<p>（4）浏览器根据RenderTree开始渲染和展示</p>
+<p>（5）遇到&lt;script&gt;时，会执行并阻塞渲染（<font color="red">为什么会阻塞，因为&lt;script&gt;会操作改变DOM树，会有冲突，所以会有“阻塞”</font>）</p>
+<p>注：图片是异步加载的，不会阻塞页面渲染</p>
+<h2 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h2><h3 id="1-为什么要把CSS放在-lt-head-gt-中"><a href="#1-为什么要把CSS放在-lt-head-gt-中" class="headerlink" title="1.为什么要把CSS放在&lt;head&gt;中"></a>1.为什么要把CSS放在&lt;head&gt;中</h3><ul>
+<li>用户体验差，渲染两次，有卡顿现象</li>
+<li>性能差，一次就可以渲染出来，放后边就要渲染多次<h3 id="2-为什么要把js放在最后面"><a href="#2-为什么要把js放在最后面" class="headerlink" title="2.为什么要把js放在最后面"></a>2.为什么要把js放在最后面</h3></li>
+<li>不会阻塞HTML结构渲染，使页面更快出来</li>
+<li><p>放在上面时，不能拿到页面所有的标签</p>
+<h3 id="3-window-onload和DOMContentLoaded区别"><a href="#3-window-onload和DOMContentLoaded区别" class="headerlink" title="3.window.onload和DOMContentLoaded区别"></a>3.window.onload和DOMContentLoaded区别</h3><p>  window.addEventListener(‘load’,function(){</p>
+<pre><code>//页面的全部资源加载完才执行，包括图片，视频
+</code></pre><p>  });<br>  window.addEventListener(‘DOMContentLoaded’,function(){</p>
+<pre><code>//DOM渲染完即刻执行，此时图片，视频资源可能还没加载完
+</code></pre><p>  });</p>
+</li>
+</ul>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2017/08/03/性能优化/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2017/08/03/上线和回滚/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2017 Xiao Jia
+  
+      with help from <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+
+</body>
+</html>

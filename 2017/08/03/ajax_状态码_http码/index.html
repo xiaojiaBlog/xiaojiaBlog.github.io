@@ -1,0 +1,294 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>readyState状态属性、Http状态码（status） | Xiao Jia&#39;Blog</title>
+  <meta name="author" content="Xiao Jia">
+  
+  <meta name="description" content="分享的总结心得~">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="readyState状态属性、Http状态码（status）"/>
+  <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="Xiao Jia&#39;Blog" type="application/atom+xml">
+  
+  
+    <link href="/img/title.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">readyState状态属性、Http状态码（status）</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-03</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <p>转载至：<a href="https://cwjinterview.github.io/2017/04/23/HTTP状态码/" title="HTTP状态码" target="_blank" rel="external">https://cwjinterview.github.io/2017/04/23/HTTP状态码/</a></p>
+<h1 id="readyState属性值"><a href="#readyState属性值" class="headerlink" title="readyState属性值"></a>readyState属性值</h1><p>我们通常会通过ajax方法发送异步请求让 JavaScript 继续执行而不必等待响应。此时，可以检测 XMLHttpRequest 对象的 readyState 属性，该属性表示请求/响应过程中的当前活动阶段。这个属性可取的值如下：</p>
+<ul>
+<li>0：未初始化。尚未调用 open() 方法。</li>
+<li>1：启动。已经调用 open() 方法，但尚未调用 send() 方法。</li>
+<li>2：发送。已经调用 send() 方法，但尚未接收响应。</li>
+<li>3：接收。已经接收到部分响应数据。</li>
+<li>4：完成。已经接收到全部响应数据，而且已经可以在客户端使用了。<h1 id="HTTP状态码-status"><a href="#HTTP状态码-status" class="headerlink" title="HTTP状态码(status)"></a>HTTP状态码(status)</h1></li>
+</ul>
+<p>HTTP状态码的英文为HTTP Status Code。</p>
+<p>200 - 请求成功</p>
+<p>301 - 资源（网页等）被永久转移到其它URL</p>
+<p>404 - 请求的资源（网页等）不存在</p>
+<p>500 - 内部服务器错误</p>
+<p>302 Found   临时移动。与301类似。但资源只是临时被移动。客户端应继续使用原有URI</p>
+<p>304 Not Modified    未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会<strong>缓存</strong>访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源</p>
+<h1 id="HTTP状态码分类"><a href="#HTTP状态码分类" class="headerlink" title="HTTP状态码分类"></a>HTTP状态码分类</h1><p>分类  分类描述</p>
+<p>1** 信息，服务器收到请求，需要请求者继续执行操作</p>
+<p>2** 成功，操作被成功接收并处理</p>
+<p>3** 重定向，需要进一步的操作以完成请求</p>
+<p>4** 客户端错误，请求包含语法错误或无法完成请求</p>
+<p>5** 服务器错误，服务器在处理请求的过程中发生了错误</p>
+<h1 id="HTTP状态码列表–详细"><a href="#HTTP状态码列表–详细" class="headerlink" title="HTTP状态码列表–详细"></a>HTTP状态码列表–详细</h1><ol>
+<li><p>100 Continue    继续。客户端应继续其请求</p>
+</li>
+<li><p>101 Switching Protocols 切换协议。服务器根据客户端的请求切换协议。只能切换到更高级的协议，例如，切换到HTTP的新版本协议</p>
+</li>
+<li>200 OK  请求成功。一般用于GET与POST请求</li>
+<li>201 Created 已创建。成功请求并创建了新的资源</li>
+<li>202 Accepted    已接受。已经接受请求，但未处理完成</li>
+<li>203 Non-Authoritative Information   非授权信息。请求成功。但返回的meta信息不在原始的服务器，而是一个副本</li>
+<li>204 No Content  无内容。服务器成功处理，但未返回内容。在未更新网页的情况下，可确保浏览器继续显示当前文档</li>
+<li>205 Reset Content   重置内容。服务器处理成功，用户终端（例如：浏览器）应重置文档视图。可通过此返回码清除浏览器的表单域</li>
+<li><p>206 Partial Content 部分内容。服务器成功处理了部分GET请求</p>
+</li>
+<li><p>300 Multiple Choices    多种选择。请求的资源可包括多个位置，相应可返回一个资源特征与地址的列表用于用户终端（例如：浏览器）选择</p>
+</li>
+<li>301 Moved Permanently   永久移动。请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替</li>
+<li>302 Found   临时移动。与301类似。但资源只是临时被移动。客户端应继续使用原有URI</li>
+<li>303 See Other   查看其它地址。与301类似。使用GET和POST请求查看</li>
+<li>304 Not Modified    未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源</li>
+<li>305 Use Proxy   使用代理。所请求的资源必须通过代理访问</li>
+<li>306 Unused  已经被废弃的HTTP状态码</li>
+<li><p>307 Temporary Redirect  临时重定向。与302类似。使用GET请求重定向</p>
+</li>
+<li><p>400 Bad Request 客户端请求的语法错误，服务器无法理解</p>
+</li>
+<li>401 Unauthorized    请求要求用户的身份认证</li>
+<li>402 Payment Required    保留，将来使用</li>
+<li>403 Forbidden   服务器理解请求客户端的请求，但是拒绝执行此请求</li>
+<li>404 Not Found   服务器无法根据客户端的请求找到资源（网页）。通过此代码，网站设计人员可设置”您所请求的资源无法找到”的个性页面</li>
+<li>405 Method Not Allowed  客户端请求中的方法被禁止</li>
+<li>406 Not Acceptable  服务器无法根据客户端请求的内容特性完成请求</li>
+<li>407 Proxy Authentication Required   请求要求代理的身份认证，与401类似，但请求者应当使用代理进行授权</li>
+<li>408 Request Time-out    服务器等待客户端发送的请求时间过长，超时</li>
+<li>409 Conflict    服务器完成客户端的PUT请求是可能返回此代码，服务器处理请求时发生了冲突</li>
+<li>410 Gone    客户端请求的资源已经不存在。410不同于404，如果资源以前有现在被永久删除了可使用410代码，网站设计人员可通过301代码指定资源的新位置</li>
+<li>411 Length Required 服务器无法处理客户端发送的不带Content-Length的请求信息</li>
+<li>412 Precondition Failed 客户端请求信息的先决条件错误</li>
+<li>413 Request Entity Too Large    由于请求的实体过大，服务器无法处理，因此拒绝请求。为防止客户端的连续请求，服务器可能会关闭连接。如果只是服务器暂时无法处理，则会包含一个Retry-After的响应信息</li>
+<li>414 Request-URI Too Large   请求的URI过长（URI通常为网址），服务器无法处理</li>
+<li>415 Unsupported Media Type  服务器无法处理请求附带的媒体格式</li>
+<li>416 Requested range not satisfiable 客户端请求的范围无效</li>
+<li>417 Expectation Failed  服务器无法满足Expect的请求头信息</li>
+<li>500 Internal Server Error   服务器内部错误，无法完成请求</li>
+<li>501 Not Implemented 服务器不支持请求的功能，无法完成请求<br>502 Bad Gateway 充当网关或代理的服务器，从远端服务器接收到了一个无效的请求</li>
+<li>503 Service Unavailable 由于超载或系统维护，服务器暂时的无法处理客户端的请求。延时的长度可包含在服务器的Retry-After头信息中</li>
+<li>504 Gateway Time-out    充当网关或代理的服务器，未及时从远端服务器获取请求</li>
+<li>505 HTTP Version not supported  服务器不支持请求的HTTP协议的版本，无法完成处理</li>
+</ol>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+	
+		
+			
+			
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2017/08/03/ajax实现跨域/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2017/08/03/事件绑定、事件冒泡、事件代理/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2017 Xiao Jia
+  
+      with help from <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+
+</body>
+</html>
