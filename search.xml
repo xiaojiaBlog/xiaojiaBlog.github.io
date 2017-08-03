@@ -3,52 +3,6 @@
   
     
     <entry>
-      <title><![CDATA[BOM操作]]></title>
-      <url>/2017/08/03/BOM%E6%93%8D%E4%BD%9C/</url>
-      <content type="html"><![CDATA[<h3 id="一、如何检测浏览器的类型"><a href="#一、如何检测浏览器的类型" class="headerlink" title="一、如何检测浏览器的类型"></a>一、如何检测浏览器的类型</h3><p><strong>navigator对象</strong></p>
-<blockquote>
-<table table="" cellspacing="0" style="border:1px solid #e6e6e6;text-align:left"><tr><th>属性</th><th>描述</th></tr><tr><td>appCodeName</td><td>返回浏览器的代码名。</td></tr><tr><td>appMinorVersion</td><td>返回浏览器的次级版本。</td></tr><tr><td>appName</td><td>返回浏览器的名称。</td></tr><tr><td>appVersion</td><td>返回浏览器的平台和版本信息。</td></tr><tr><td>browserLanguage</td><td>返回当前浏览器的语言。</td></tr><tr><td>cookieEnabled</td><td>返回指明浏览器中是否启用 cookie 的布尔值。</td></tr><tr><td>cpuClass</td><td>返回浏览器系统的 CPU 等级。</td></tr><tr><td>onLine</td><td>返回指明系统是否处于脱机模式的布尔值。</td></tr><tr><td>platform</td><td>返回运行浏览器的操作系统平台。</td></tr><tr><td>systemLanguage</td><td>返回 OS 使用的默认语言。</td></tr><tr><td>userAgent</td><td>返回由客户机发送服务器的 user-agent 头部的值。</td></tr><tr><td>userLanguage</td><td>返回 OS 的自然语言设置。</td></tr></table>
-
-</blockquote>
-<pre><code>var ua=navigator.userAgent;
-var reg=/chrome/i;
-var isChrome=reg.test(ua);
-console.log(isChrome);
-</code></pre><h3 id="二、拆解url的各个部分"><a href="#二、拆解url的各个部分" class="headerlink" title="二、拆解url的各个部分"></a>二、拆解url的各个部分</h3><p><strong>location对象</strong></p>
-<blockquote>
-<table table="" cellspacing="0" style="border:1px solid #e6e6e6;text-align:left"><tr><th>属性</th><th>例子</th><th>描述</th></tr><tr><td>href</td><td>“<a href="http://www.wrox.com/WileyCDA/" target="_blank" rel="external">http://www.wrox.com/WileyCDA/</a>“</td><td>设置或返回完整的 URL。</td></tr><tr><td>protocol</td><td>“http”</td><td>设置或返回当前 URL 的协议。</td></tr><tr><td>pathname</td><td>“/WileyCDA/“</td><td>设置或返回当前 URL 的路径部分。</td></tr><tr><td>search</td><td>“?q=javascript”</td><td>设置或返回从问号 (?) 开始的 URL（查询部分）。</td></tr><tr><td>hash</td><td>“#content”</td><td><a href="http://www.sunchis.com/index.html#welcome的hash是“#welcome”" target="_blank" rel="external">http://www.sunchis.com/index.html#welcome的hash是“#welcome”</a></td><td>设置或返回从井号 (#) 开始的 URL（锚）。</td></tr><tr><td>host</td><td>“www.wrox.com:80”</td><td>设置或返回主机名和当前 URL 的端口号(如果有的话)。</td></tr><tr><td>hostname</td><td>“www.wrox.com”</td><td>设置或返回当前 URL 的主机名。</td></tr><tr><td>port</td><td>“8080”</td><td>设置或返回当前 URL 的端口号。</td></tr></table>
-
-</blockquote>
-<p>面试题：有一个页面，url为’<a href="http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回" target="_blank" rel="external">http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回</a></p>
-<pre><code>function getParamObj(url){
-    var startIndex =url.indexOf(&apos;?&apos;)+1;
-    var subParam=url.substring(startIndex,url.length);
-    var arrParam=subParam.split(&apos;&amp;&apos;);
-    var objParam=new Object();//注意：初始化一个对象
-    for(var i=0;i&lt;arrParam.length;i++){
-        var arrSingle=arrParam[i].split(&apos;=&apos;);
-        objParam[arrSingle[0]]=arrSingle[1];//注意：对象属性的赋值方法obj[key]=value
-    }
-    return objParam;
-}
-</code></pre>]]></content>
-      
-        <categories>
-            
-            <category> JS </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> BOM </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[将url附带的参数转换为对象返回]]></title>
       <url>/2017/08/03/%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%B9%E6%B3%95%EF%BC%9A%E5%B0%86url%E9%99%84%E5%B8%A6%E7%9A%84%E5%8F%82%E6%95%B0%E8%BD%AC%E6%8D%A2%E4%B8%BA%E5%AF%B9%E8%B1%A1%E8%BF%94%E5%9B%9Emd/</url>
       <content type="html"><![CDATA[<p>面试题：有一个页面，url为’<a href="http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回" target="_blank" rel="external">http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回</a></p>
@@ -68,6 +22,52 @@ console.log(isChrome);
         <categories>
             
             <category> 前端小例子 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> BOM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[BOM操作]]></title>
+      <url>/2017/08/03/BOM%E6%93%8D%E4%BD%9C/</url>
+      <content type="html"><![CDATA[<h3 id="一、如何检测浏览器的类型"><a href="#一、如何检测浏览器的类型" class="headerlink" title="一、如何检测浏览器的类型"></a>一、如何检测浏览器的类型</h3><p><strong>navigator对象</strong></p>
+<blockquote>
+<table table="" cellspacing="0" style="border:1px solid #e6e6e6;text-align:left"><tr><th>属性</th><th>描述</th></tr><tr><td>appCodeName</td><td>返回浏览器的代码名。</td></tr><tr><td>appMinorVersion</td><td>返回浏览器的次级版本。</td></tr><tr><td>appName</td><td>返回浏览器的名称。</td></tr><tr><td>appVersion</td><td>返回浏览器的平台和版本信息。</td></tr><tr><td>browserLanguage</td><td>返回当前浏览器的语言。</td></tr><tr><td>cookieEnabled</td><td>返回指明浏览器中是否启用 cookie 的布尔值。</td></tr><tr><td>cpuClass</td><td>返回浏览器系统的 CPU 等级。</td></tr><tr><td>onLine</td><td>返回指明系统是否处于脱机模式的布尔值。</td></tr><tr><td>platform</td><td>返回运行浏览器的操作系统平台。</td></tr><tr><td>systemLanguage</td><td>返回 OS 使用的默认语言。</td></tr><tr><td>userAgent</td><td>返回由客户机发送服务器的 user-agent 头部的值。</td></tr><tr><td>userLanguage</td><td>返回 OS 的自然语言设置。</td></tr></table>
+
+</blockquote>
+<pre><code>var ua=navigator.userAgent;
+var reg=/chrome/i;
+var isChrome=reg.test(ua);
+console.log(isChrome);
+</code></pre><h3 id="二、拆解url的各个部分"><a href="#二、拆解url的各个部分" class="headerlink" title="二、拆解url的各个部分"></a>二、拆解url的各个部分</h3><p><strong>location对象</strong></p>
+<blockquote>
+<table table="" cellspacing="0" style="border:1px solid #e6e6e6;text-align:left"><tr><th>属性</th><th>例子</th><th>描述</th></tr><tr><td>href</td><td>“<a href="http://www.wrox.com/WileyCDA/" target="_blank" rel="external">http://www.wrox.com/WileyCDA/</a>“</td><td>设置或返回完整的 URL。</td></tr><tr><td>protocol</td><td>“http”</td><td>设置或返回当前 URL 的协议。</td></tr><tr><td>pathname</td><td>“/WileyCDA/“</td><td>设置或返回当前 URL 的路径部分。</td></tr><tr><td>search</td><td>“?q=javascript”</td><td>设置或返回从问号 (?) 开始的 URL（查询部分）。</td></tr><tr><td>hash</td><td>“#content”</td><td>设置或返回从井号 (#) 开始的 URL（锚）。</td></tr><tr><td>host</td><td>“www.wrox.com:80”</td><td>设置或返回主机名和当前 URL 的端口号(如果有的话)。</td></tr><tr><td>hostname</td><td>“www.wrox.com”</td><td>设置或返回当前 URL 的主机名。</td></tr><tr><td>port</td><td>“8080”</td><td>设置或返回当前 URL 的端口号。</td></tr></table>
+
+</blockquote>
+<p>面试题：有一个页面，url为’<a href="http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回" target="_blank" rel="external">http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回</a></p>
+<pre><code>function getParamObj(url){
+    var startIndex =url.indexOf(&apos;?&apos;)+1;
+    var subParam=url.substring(startIndex,url.length);
+    var arrParam=subParam.split(&apos;&amp;&apos;);
+    var objParam=new Object();//注意：初始化一个对象
+    for(var i=0;i&lt;arrParam.length;i++){
+        var arrSingle=arrParam[i].split(&apos;=&apos;);
+        objParam[arrSingle[0]]=arrSingle[1];//注意：对象属性的赋值方法obj[key]=value
+    }
+    return objParam;
+}
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> JS </category>
             
         </categories>
         
@@ -277,6 +277,47 @@ document.body.appendChild(oFragment);
     </entry>
     
     <entry>
+      <title><![CDATA[写一个生成num个在[min-max]之间的随机整数函数]]></title>
+      <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%9F%E6%88%90num%E4%B8%AA%E5%9C%A8%5Bmin-max%5D%E4%B9%8B%E9%97%B4%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B4%E6%95%B0%E5%87%BD%E6%95%B0/</url>
+      <content type="html"><![CDATA[<p><strong>解析</strong>：</p>
+<ul>
+<li>Math.random()方法返回大于等于0小于1的一个随机数；</li>
+<li>Math.ceil()方法执行向上舍入，即大于等于当前数；</li>
+<li>Math.floor()方法执行向下舍入，即小于等于当前数；</li>
+<li><p>Math.round()方法标准舍入（四舍五入）</p>
+<pre><code>function setArr(num,min,max){
+    if(max&gt;min){
+        var range=max-min;
+        var arr=[];
+        for(var i=0;i&lt;num;i++){
+            var value=Math.floor(Math.random()*range)+min;
+            arr.push(value);
+        }
+        return arr;
+    }    
+}
+
+setArr(22,0,15);
+</code></pre></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 前端小例子 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> forEach </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[写一个能遍历对象和数组的forEach函数]]></title>
       <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E8%83%BD%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E7%BB%84%E7%9A%84forEach%E5%87%BD%E6%95%B0/</url>
       <content type="html"><![CDATA[<p><strong>解析</strong>：数组API中有forEach(function(item,index){})方法，但是需要注意参数的顺序；而对象是通过for(…in..)方法实现遍历。</p>
@@ -311,47 +352,6 @@ forEach(obj,function(key,value){
     console.log(key,value);
 });
 </code></pre>]]></content>
-      
-        <categories>
-            
-            <category> 前端小例子 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> forEach </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[写一个生成num个在[min-max]之间的随机整数函数]]></title>
-      <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%9F%E6%88%90num%E4%B8%AA%E5%9C%A8%5Bmin-max%5D%E4%B9%8B%E9%97%B4%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B4%E6%95%B0%E5%87%BD%E6%95%B0/</url>
-      <content type="html"><![CDATA[<p><strong>解析</strong>：</p>
-<ul>
-<li>Math.random()方法返回大于等于0小于1的一个随机数；</li>
-<li>Math.ceil()方法执行向上舍入，即大于等于当前数；</li>
-<li>Math.floor()方法执行向下舍入，即小于等于当前数；</li>
-<li><p>Math.round()方法标准舍入（四舍五入）</p>
-<pre><code>function setArr(num,min,max){
-    if(max&gt;min){
-        var range=max-min;
-        var arr=[];
-        for(var i=0;i&lt;num;i++){
-            var value=Math.floor(Math.random()*range)+min;
-            arr.push(value);
-        }
-        return arr;
-    }    
-}
-
-setArr(22,0,15);
-</code></pre></li>
-</ul>
-]]></content>
       
         <categories>
             
