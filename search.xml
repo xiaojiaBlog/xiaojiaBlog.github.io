@@ -3,6 +3,202 @@
   
     
     <entry>
+      <title><![CDATA[DOM操作]]></title>
+      <url>/2017/08/02/DOM%E6%93%8D%E4%BD%9C/</url>
+      <content type="html"><![CDATA[<p>DOM是文档对象模型(Document Object Model)，是W3C出台的推荐标准。其赋予了JS操作节点的能力。当网页被加载时，浏览器就会创建页面的文档对象模型。</p>
+<p>可以理解为：浏览器把拿到的html代码，<strong>结构化</strong>成一个浏览器<strong>能识别</strong>并且js<strong>可操作</strong>的模型。</p>
+<p>DOM被构造为对象的<strong>树</strong>。</p>
+<h2 id="操作DOM"><a href="#操作DOM" class="headerlink" title="操作DOM"></a>操作DOM</h2><h3 id="一、新增节点"><a href="#一、新增节点" class="headerlink" title="一、新增节点"></a>一、新增节点</h3><p>（1）createElement();——创建元素节点</p>
+<p>（2）createTextNode();——创建文本节点</p>
+<p>（3）createDocumentFragment();——创建一个虚拟DOM片段</p>
+<pre><code>var oFragment = document.createDocumentFragment();
+
+for(var i = 0 ; i &lt; 10; i ++) {
+    var p = document.createElement(&quot;p&quot;);
+    var oTxt = document.createTextNode(&quot;段落&quot; + i);
+    p.appendChild(oTxt);
+    oFragment.appendChild(p);&lt;br data-filtered=&quot;filtered&quot;&gt;
+}
+
+document.body.appendChild(oFragment);
+</code></pre><h3 id="二、插入节点"><a href="#二、插入节点" class="headerlink" title="二、插入节点"></a>二、插入节点</h3><p>（1）appendChild(newNode);——插入新创建的节点；也可以将已有的节点移动位置</p>
+<pre><code>//新增节点
+var p=document.createElement(&quot;p&quot;);
+p.innerHTML=&quot;new p&quot;;
+var div1=document.getElementById(&quot;div1&quot;);
+div1.appendChild(p);
+
+//移动节点
+var p4=document.getElementById(&quot;p4&quot;);
+div1.appendChild(p4);
+</code></pre><p>（2）insertBefore(newNode,existingNode);</p>
+<pre><code>//移动某个列表项到另一个列表项：
+var node=document.getElementById(&quot;myList2&quot;).lastChild;
+var list=document.getElementById(&quot;myList1&quot;);
+list.insertBefore(node,list.childNodes[0]);
+</code></pre><h3 id="三、删除节点"><a href="#三、删除节点" class="headerlink" title="三、删除节点"></a>三、删除节点</h3><p>（1）removeChild();</p>
+<pre><code>var div1=document.getElementById(&quot;div1&quot;);
+var childNodes=div1.childNodes;//有五个，其中包括三个空的text
+div1.removeChild(childNodes[1]);
+</code></pre><h3 id="四、替换节点"><a href="#四、替换节点" class="headerlink" title="四、替换节点"></a>四、替换节点</h3><p>（1）replaceChild(newnode,oldnode);</p>
+<pre><code>var textnode=document.createTextNode(&quot;Water&quot;);
+var item=document.getElementById(&quot;myList&quot;).childNodes[0];
+item.replaceChild(textnode,item.childNodes[0]);
+</code></pre><h3 id="五、获取父节点"><a href="#五、获取父节点" class="headerlink" title="五、获取父节点"></a>五、获取父节点</h3><p>（1）node.parentNode;</p>
+<pre><code>//获取父元素
+var p4=document.getElementById(&quot;p4&quot;);
+console.log(p4.parentNode);
+</code></pre><h3 id="六、获取子节点"><a href="#六、获取子节点" class="headerlink" title="六、获取子节点"></a>六、获取子节点</h3><p><strong>节点的类型：nodeType</strong></p>
+<pre><code>元素类型    节点类型
+元素            1
+属性            2
+文本            3
+注释            8
+文档            9
+</code></pre><p>（1）node.childNodes;</p>
+<pre><code>for (var i = 0; i &lt; oList.childNodes.length; i++) {//oList是做的ul的对象。  
+    //nodeType是节点的类型，利用nodeType来判断节点类型，再去控制子节点  
+    if (oList.childNodes[i].nodeType == 1) {//查找到oList内的元素节点  
+        console.log(oList.childNodes[i]);//在控制器日志中显示找到的元素节点  
+    }  
+} 
+</code></pre><p>（2）node.children;</p>
+<p>children也可以获取子节点，而且兼容各种浏览器,包括IE6-8</p>
+<p>（3）node.firstChild和node.firstElementChild</p>
+<p>查找第一个子节点。此存在浏览器兼容问题：firstChild是IE兼容，firstElementChild是非IE（6，7，8）兼容。</p>
+<p>（4）node.lastChild和node.lastElementChild</p>
+<p>查找最后一个子节点。此存在浏览器兼容问题：lastChild 是IE兼容，lastElementChild是非IE兼容。</p>
+<p>（5）node.nextSbling;–&gt;查找下一个兄弟节点。</p>
+<p>（6）node.previousSbling;–&gt;查找上一个兄弟节点。</p>
+<h3 id="七、查找节点"><a href="#七、查找节点" class="headerlink" title="七、查找节点"></a>七、查找节点</h3><p>（1）document.getElementById();</p>
+<p>（2）document.getElementsByTagName();</p>
+<p>（3）document.getElementsByName();</p>
+<p>（4）document.getElementsByClassName();</p>
+<p>IE9以下的版本却不支持document.getElementsByClassName方法，<font color="red">有兼容性问题</font>，可使用原生JS模拟重新实现。</p>
+<p><strong>解析</strong>：通过获取指定的标签，使用getElementsByTagName来获取标签内容，然后根据标签的className跟传进来的参数进行对比，如果相等就插入数组，最后返回数组。</p>
+<pre><code>function getClassNames(classStr,tagName){  
+      if (document.getElementsByClassName) {  
+            return document.getElementsByClassName(classStr)  
+      }else {  
+            var nodes = document.getElementsByTagName(tagName),ret = [];           
+            for(i = 0; i &lt; nodes.length; i++) {  
+             if(hasClass(nodes[i],classStr)){  
+                 ret.push(nodes[i])  
+             }  
+          }  
+            return ret;  
+      }  
+}  
+function hasClass(tagStr,classStr){  
+     var arr=tagStr.className.split(/\s+/ );  //这个正则表达式是因为class可以有多个,判断是否包含  
+     for (var i=0;i&lt;arr.length;i++){  
+            if (arr[i]==classStr){  
+                  return true ;  
+            }  
+     }  
+     return false ;  
+}  
+
+//调用
+var  divs = getClassNames(&apos;tabs_div&apos; , &apos;div&apos;);  
+</code></pre><p>（5）document.querySelectorAll();</p>
+<pre><code>//综合例子    
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;DOM节点获取&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;div1&quot; class=&quot;class-div1&quot;&gt;
+        &lt;p id=&quot;p1&quot; data-name=&quot;p1-data-name&quot;&gt;this is p1&lt;/p&gt;
+        &lt;p id=&quot;p2&quot;&gt;this is p2&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;div2&quot;  name=&quot;div2&quot;&gt;
+        &lt;p id=&quot;p3&quot;&gt;this is p3&lt;/p&gt;
+        &lt;p id=&quot;p4&quot;&gt;this is p4&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        var div1=document.getElementById(&quot;div1&quot;);
+        var divList=document.getElementsByTagName(&quot;div&quot;);
+        var div2=document.getElementsByName(&quot;div2&quot;)[0];
+        console.log(div2);
+        console.log(divList.length);
+        console.log(divList[0]);
+        var pList=document.getElementsByClassName(&quot;class-div1&quot;);
+        console.log(pList);
+        var pListAll=document.querySelectorAll(&quot;p&quot;);
+        console.log(pListAll);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h2 id="DOM节点的Attribute和property"><a href="#DOM节点的Attribute和property" class="headerlink" title="DOM节点的Attribute和property"></a>DOM节点的Attribute和property</h2><p>区别：property:只是一个JS对象的属性的获取、修改<br><br>attribute:是对html标签属性的获取修改</p>
+<pre><code>//property
+var div1=document.getElementById(&quot;div1&quot;);
+console.log(div1.className);
+div1.className=&quot;abc&quot;;
+console.log(div1.className);
+
+//attribute
+var p1=document.getElementById(&quot;p1&quot;);
+console.log(p1.getAttribute(&quot;data-name&quot;));
+p1.setAttribute(&quot;data-name&quot;,&quot;aaa&quot;);
+console.log(p1.getAttribute(&quot;data-name&quot;));
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> JS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> DOM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[使用createDocumentFragment()方法]]></title>
+      <url>/2017/08/02/%E4%BD%BF%E7%94%A8createDocumentFragment()/</url>
+      <content type="html"><![CDATA[<p>假如想创建十个段落，使用常规的方式可能会写出这样的代码：</p>
+<pre><code>for(var i = 0 ; i &lt; 10; i ++) {
+    var p = document.createElement(&quot;p&quot;);
+    var oTxt = document.createTextNode(&quot;段落&quot; + i);
+    p.appendChild(oTxt);
+    document.body.appendChild(p);
+}
+</code></pre><p>当然，这段代码运行是没有问题，但是他调用了十次document.body.appendChild()，每次都要产生一次页面渲染。这时碎片就十分有用了：</p>
+<pre><code>var oFragment = document.createDocumentFragment();
+
+for(var i = 0 ; i &lt; 10; i ++) {
+    var p = document.createElement(&quot;p&quot;);
+    var oTxt = document.createTextNode(&quot;段落&quot; + i);
+    p.appendChild(oTxt);
+    oFragment.appendChild(p);&lt;br data-filtered=&quot;filtered&quot;&gt;}
+1
+document.body.appendChild(oFragment);
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> 前端小例子 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> DOM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[写一个能遍历对象和数组的forEach函数]]></title>
       <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E8%83%BD%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E7%BB%84%E7%9A%84forEach%E5%87%BD%E6%95%B0/</url>
       <content type="html"><![CDATA[<p><strong>解析</strong>：数组API中有forEach(function(item,index){})方法，但是需要注意参数的顺序；而对象是通过for(…in..)方法实现遍历。</p>
