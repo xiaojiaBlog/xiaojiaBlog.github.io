@@ -81,6 +81,43 @@ console.log(isChrome);
     </entry>
     
     <entry>
+      <title><![CDATA[使用createDocumentFragment()方法]]></title>
+      <url>/2017/08/02/%E4%BD%BF%E7%94%A8createDocumentFragment()/</url>
+      <content type="html"><![CDATA[<p>假如想创建十个段落，使用常规的方式可能会写出这样的代码：</p>
+<pre><code>for(var i = 0 ; i &lt; 10; i ++) {
+    var p = document.createElement(&quot;p&quot;);
+    var oTxt = document.createTextNode(&quot;段落&quot; + i);
+    p.appendChild(oTxt);
+    document.body.appendChild(p);
+}
+</code></pre><p>当然，这段代码运行是没有问题，但是他调用了十次document.body.appendChild()，每次都要产生一次页面渲染。这时碎片就十分有用了：</p>
+<pre><code>var oFragment = document.createDocumentFragment();
+
+for(var i = 0 ; i &lt; 10; i ++) {
+    var p = document.createElement(&quot;p&quot;);
+    var oTxt = document.createTextNode(&quot;段落&quot; + i);
+    p.appendChild(oTxt);
+    oFragment.appendChild(p);&lt;br data-filtered=&quot;filtered&quot;&gt;}
+1
+document.body.appendChild(oFragment);
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> 前端小例子 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> DOM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[DOM操作]]></title>
       <url>/2017/08/02/DOM%E6%93%8D%E4%BD%9C/</url>
       <content type="html"><![CDATA[<p>DOM是文档对象模型(Document Object Model)，是W3C出台的推荐标准。其赋予了JS操作节点的能力。当网页被加载时，浏览器就会创建页面的文档对象模型。</p>
@@ -240,84 +277,6 @@ console.log(p1.getAttribute(&quot;data-name&quot;));
     </entry>
     
     <entry>
-      <title><![CDATA[使用createDocumentFragment()方法]]></title>
-      <url>/2017/08/02/%E4%BD%BF%E7%94%A8createDocumentFragment()/</url>
-      <content type="html"><![CDATA[<p>假如想创建十个段落，使用常规的方式可能会写出这样的代码：</p>
-<pre><code>for(var i = 0 ; i &lt; 10; i ++) {
-    var p = document.createElement(&quot;p&quot;);
-    var oTxt = document.createTextNode(&quot;段落&quot; + i);
-    p.appendChild(oTxt);
-    document.body.appendChild(p);
-}
-</code></pre><p>当然，这段代码运行是没有问题，但是他调用了十次document.body.appendChild()，每次都要产生一次页面渲染。这时碎片就十分有用了：</p>
-<pre><code>var oFragment = document.createDocumentFragment();
-
-for(var i = 0 ; i &lt; 10; i ++) {
-    var p = document.createElement(&quot;p&quot;);
-    var oTxt = document.createTextNode(&quot;段落&quot; + i);
-    p.appendChild(oTxt);
-    oFragment.appendChild(p);&lt;br data-filtered=&quot;filtered&quot;&gt;}
-1
-document.body.appendChild(oFragment);
-</code></pre>]]></content>
-      
-        <categories>
-            
-            <category> 前端小例子 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> DOM </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[写一个生成num个在[min-max]之间的随机整数函数]]></title>
-      <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%9F%E6%88%90num%E4%B8%AA%E5%9C%A8%5Bmin-max%5D%E4%B9%8B%E9%97%B4%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B4%E6%95%B0%E5%87%BD%E6%95%B0/</url>
-      <content type="html"><![CDATA[<p><strong>解析</strong>：</p>
-<ul>
-<li>Math.random()方法返回大于等于0小于1的一个随机数；</li>
-<li>Math.ceil()方法执行向上舍入，即大于等于当前数；</li>
-<li>Math.floor()方法执行向下舍入，即小于等于当前数；</li>
-<li><p>Math.round()方法标准舍入（四舍五入）</p>
-<pre><code>function setArr(num,min,max){
-    if(max&gt;min){
-        var range=max-min;
-        var arr=[];
-        for(var i=0;i&lt;num;i++){
-            var value=Math.floor(Math.random()*range)+min;
-            arr.push(value);
-        }
-        return arr;
-    }    
-}
-
-setArr(22,0,15);
-</code></pre></li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 前端小例子 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> forEach </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[写一个能遍历对象和数组的forEach函数]]></title>
       <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E8%83%BD%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E7%BB%84%E7%9A%84forEach%E5%87%BD%E6%95%B0/</url>
       <content type="html"><![CDATA[<p><strong>解析</strong>：数组API中有forEach(function(item,index){})方法，但是需要注意参数的顺序；而对象是通过for(…in..)方法实现遍历。</p>
@@ -352,6 +311,47 @@ forEach(obj,function(key,value){
     console.log(key,value);
 });
 </code></pre>]]></content>
+      
+        <categories>
+            
+            <category> 前端小例子 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> forEach </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[写一个生成num个在[min-max]之间的随机整数函数]]></title>
+      <url>/2017/08/02/%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%9F%E6%88%90num%E4%B8%AA%E5%9C%A8%5Bmin-max%5D%E4%B9%8B%E9%97%B4%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B4%E6%95%B0%E5%87%BD%E6%95%B0/</url>
+      <content type="html"><![CDATA[<p><strong>解析</strong>：</p>
+<ul>
+<li>Math.random()方法返回大于等于0小于1的一个随机数；</li>
+<li>Math.ceil()方法执行向上舍入，即大于等于当前数；</li>
+<li>Math.floor()方法执行向下舍入，即小于等于当前数；</li>
+<li><p>Math.round()方法标准舍入（四舍五入）</p>
+<pre><code>function setArr(num,min,max){
+    if(max&gt;min){
+        var range=max-min;
+        var arr=[];
+        for(var i=0;i&lt;num;i++){
+            var value=Math.floor(Math.random()*range)+min;
+            arr.push(value);
+        }
+        return arr;
+    }    
+}
+
+setArr(22,0,15);
+</code></pre></li>
+</ul>
+]]></content>
       
         <categories>
             
