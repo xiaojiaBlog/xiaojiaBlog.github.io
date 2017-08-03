@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>javascript数据类型 | Xiao Jia&#39;Blog</title>
+  <title>将url附带的参数转换为对象返回 | Xiao Jia&#39;Blog</title>
   <meta name="author" content="Xiao Jia">
   
   <meta name="description" content="分享的总结心得~">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="javascript数据类型"/>
+  <meta property="og:title" content="将url附带的参数转换为对象返回"/>
   <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
 
   
@@ -45,7 +45,7 @@
   <div class="container" id="container">
 	<div class="content">
 	  <div class="page-header">		
-  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">javascript数据类型</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-07-31</span></h1>
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">将url附带的参数转换为对象返回</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-03</span></h1>
 </div>		
 
 <div class="row page">
@@ -58,36 +58,19 @@
 	  
 
 	  <!-- content -->
-	  <p>Javascript按存储方式区分变量类型：值类型（也称基本数据类型）和引用数据类型。</p>
-<h3 id="1-基本数据（值）类型"><a href="#1-基本数据（值）类型" class="headerlink" title="1.基本数据（值）类型"></a>1.基本数据（值）类型</h3><p>字符串型（String）；数值型（Number）;布尔型（Boolean）;未定义（undefined）；Null类型</p>
-<h3 id="2-引用数据类型"><a href="#2-引用数据类型" class="headerlink" title="2.引用数据类型"></a>2.引用数据类型</h3><p>对象（Object）类型；数组类型（Array）；函数类型（function）</p>
-<h3 id="3-区别"><a href="#3-区别" class="headerlink" title="3.区别"></a>3.区别</h3><p>基本数据类型的变量存放的是基本类型数据的实际值；而引用数据类型的变量保存对它的引用，即指针。<br><br>引用数据类型好几个变量共用一个内存块，赋值一旦被修改，互相会有影响。</p>
-<h3 id="4-需注意"><a href="#4-需注意" class="headerlink" title="4.需注意"></a>4.需注意</h3><p>(1) <strong>typeof</strong>只能区分值类型的详细类型，如果这个值是引用数据类型或者null，则区分不出来</p>
-<pre><code>typeof 95            //&quot;number&quot;
-typeof &apos;aa&apos;            //&quot;string&quot;
-typeof true            //&quot;boolean&quot;
-typeof undefined    //&quot;undefined&quot;
-typeof null            //&quot;object&quot;
-
-var o= new Object();
-typeof o            //&quot;object&quot;
-</code></pre><p>(2) <strong>null==undefined会返回true,但null===undefined会返回false。</strong>那么编码过程中，什么时候用“==”，什么时候用“===”呢？</p>
-<p>a.对象的属性是否存在    </p>
-<pre><code>if(obj.a==null){
-    //这里相当于obj.a===null||obj.a==undefined，简写形式
-    //这是jQuery源码中的推荐写法
-}
-</code></pre><p>b.函数的参数a是否存在</p>
-<pre><code>function(a,b){
-    if(a==null){
-        ...
+	  <p>面试题：有一个页面，url为’<a href="http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回" target="_blank" rel="external">http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回</a></p>
+<pre><code>function getParamObj(url){
+    var startIndex =url.indexOf(&apos;?&apos;)+1;
+    var subParam=url.substring(startIndex,url.length);
+    var arrParam=subParam.split(&apos;&amp;&apos;);
+    var objParam=new Object();//注意：初始化一个对象
+    for(var i=0;i&lt;arrParam.length;i++){
+        var arrSingle=arrParam[i].split(&apos;=&apos;);
+        objParam[arrSingle[0]]=arrSingle[1];//注意：对象属性的赋值方法obj[key]=value
     }
+    return objParam;
 }
-</code></pre><font color="red">其他情况都用“===”。</font>
-
-<p>(3)怎么判断一个变量a在if语句中是true还是false?</p>
-<pre><code>!!(a);
-</code></pre><font color="red">注：</font> 0，NaN，’’，null，false，undefined–&gt;会转换为false<br><br>(4)JS中的内置函数：Object，Array，Boolean，Number，String，Function，Date，RegExp，Error…<br><font color="red">Math是内置对象，不是函数。</font>	  
+</code></pre>	  
 
 	  <div>
   		<center>
@@ -100,6 +83,9 @@ typeof o            //&quot;object&quot;
 	
 	
 		
+	
+		
+			
 			
 		
 	
@@ -107,18 +93,8 @@ typeof o            //&quot;object&quot;
 	
 		
 			
-		
-	
-		
-	
-		
-	
-		
-	
-		
 			
-		
-	
+			
 		
 			
 		
@@ -128,27 +104,26 @@ typeof o            //&quot;object&quot;
 		
 	
 		
-			
-		
 	
 		
-			
-		
 	
-		
-			
-			
 		
 	
 		
 	
+		
+	
+		
+	
+		
 	
 	
-		<li class="prev"><a href="/2017/07/31/原型和原型链/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+		<li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
 	
 	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
 	
-		<li class="next disabled"><a>next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		<li class="next"><a href="/2017/08/02/使用createDocumentFragment()/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
 	
 </ul>
 </div>
