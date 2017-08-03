@@ -3,20 +3,68 @@
   
     
     <entry>
-      <title><![CDATA[将url附带的参数转换为对象返回]]></title>
-      <url>/2017/08/03/%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%B9%E6%B3%95%EF%BC%9A%E5%B0%86url%E9%99%84%E5%B8%A6%E7%9A%84%E5%8F%82%E6%95%B0%E8%BD%AC%E6%8D%A2%E4%B8%BA%E5%AF%B9%E8%B1%A1%E8%BF%94%E5%9B%9Emd/</url>
-      <content type="html"><![CDATA[<p>面试题：有一个页面，url为’<a href="http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回" target="_blank" rel="external">http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回</a></p>
-<pre><code>function getParamObj(url){
-    var startIndex =url.indexOf(&apos;?&apos;)+1;
-    var subParam=url.substring(startIndex,url.length);
-    var arrParam=subParam.split(&apos;&amp;&apos;);
-    var objParam=new Object();//注意：初始化一个对象
-    for(var i=0;i&lt;arrParam.length;i++){
-        var arrSingle=arrParam[i].split(&apos;=&apos;);
-        objParam[arrSingle[0]]=arrSingle[1];//注意：对象属性的赋值方法obj[key]=value
-    }
-    return objParam;
-}
+      <title><![CDATA[写一个通用的事件绑定函数]]></title>
+      <url>/2017/08/03/%E5%86%99%E4%B8%80%E4%B8%AA%E9%80%9A%E7%94%A8%E7%9A%84%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%87%BD%E6%95%B0/</url>
+      <content type="html"><![CDATA[<p>写一个可以给标签直接绑定事件，并且还可以实现事件代理时的事件绑定的方法</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;title&gt;写一个通用的事件绑定函数&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;div1&quot;&gt;
+        &lt;a href=&quot;#&quot; id=&quot;imooc1&quot;&gt;imooc1&lt;/a&gt;
+        &lt;a href=&quot;http://imooc.com&quot; id=&quot;imooc2&quot;&gt;imooc2&lt;/a&gt;
+        &lt;a href=&quot;http://imooc.com&quot; id=&quot;imooc3&quot;&gt;imooc3&lt;/a&gt;
+        &lt;a href=&quot;http://imooc.com&quot; id=&quot;imooc4&quot;&gt;imooc4&lt;/a&gt;
+        &lt;a href=&quot;http://imooc.com&quot; id=&quot;imooc5&quot;&gt;imooc5&lt;/a&gt;
+        &lt;p id=&quot;p1&quot;&gt;激活&lt;/p&gt;
+        &lt;p id=&quot;p2&quot;&gt;取消&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;!-- &lt;div id=&quot;div2&quot;&gt;
+        &lt;p id=&quot;p3&quot;&gt;取消&lt;/p&gt;
+        &lt;p id=&quot;p4&quot;&gt;取消&lt;/p&gt;
+    &lt;/div&gt; --&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        function bindEvent(elem,type,selector,fn){
+            if(fn==null){
+                fn=selector;
+                selector=null;
+            }
+            elem.addEventListener(type,function(e){
+                if(selector){//代理
+                    target=e.target;
+                    if(target.matches(selector)){
+                        fn.call(target,e);
+                    }
+                }else{
+                    fn(e);
+                }
+            });
+        }
+
+        //调用
+        //有代理的：点击哪个链接，显示哪个链接的内容
+        var div1=document.getElementById(&quot;div1&quot;);
+        bindEvent(div1,&apos;click&apos;,&apos;a&apos;,function(e){
+            e.preventDefault();//阻止默认行为
+            alert(this.innerHTML);
+        });
+
+        //没有代理的：点击id为p1的标签，显示&quot;激活&quot;
+        var p1=document.getElementById(&quot;p1&quot;);
+        bindEvent(p1,&apos;click&apos;,function(e){
+            e.stopPropagation();//阻止默认行为
+            e.cancleBubble=true;
+            alert(&quot;激活&quot;);
+        });
+
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </code></pre>]]></content>
       
         <categories>
@@ -28,7 +76,88 @@
         
         <tags>
             
-            <tag> BOM </tag>
+            <tag> javascript_事件 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[写一个兼容addEventListener()和attachEvent()的方法]]></title>
+      <url>/2017/08/03/%E5%86%99%E4%B8%80%E4%B8%AA%E8%83%BD%E5%85%BC%E5%AE%B9ie%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+      <content type="html"><![CDATA[<pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+function addEvent(elem,type,fn){
+    if(elem.addEventListener){
+        elem.addEventListener(type,fn,false);
+    }else if(elem.attachEvent){
+        elem[type+fn]=function(){
+            fn.call(elem);;
+        };
+        elem.attachEvent(&apos;on&apos;+type,elem[type+fn]);
+    }else{
+        elem[&apos;on&apos;+type]=fn;
+    }
+}
+&lt;/script&gt;
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> 前端小例子 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript_事件监听 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[事件绑定、事件冒泡、事件代理]]></title>
+      <url>/2017/08/03/%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E3%80%81%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1%E3%80%81%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/</url>
+      <content type="html"><![CDATA[<p>转载至：<a href="https://cwjinterview.github.io/2017/04/23/事件冒泡捕获/" title="事件冒泡捕获" target="_blank" rel="external">https://cwjinterview.github.io/2017/04/23/事件冒泡捕获/</a></p>
+<h1 id="冒泡"><a href="#冒泡" class="headerlink" title="冒泡"></a>冒泡</h1><p>冒泡型事件：事件按照从最特定的事件目标到最不特定的事件目标(document对象)的顺序触发。</p>
+<p>事件从事件目标(target)开始，往上冒泡直到页面的最上一级标签。</p>
+<p>所有浏览器都支持事件冒泡，但在具体实现上还有一些差别。</p>
+<p>  IE 5.5: div -&gt; body -&gt; document（会跳过&lt;html&gt;元素，从&lt;body&gt;直接跳到document）</p>
+<p>  IE 6.0: div -&gt; body -&gt; html -&gt; document</p>
+<p>  Mozilla 1.0: div -&gt; body -&gt; html -&gt; document -&gt; window</p>
+<h1 id="捕获"><a href="#捕获" class="headerlink" title="捕获"></a>捕获</h1><p>捕获型事件：事件从最不精确的对象(document 对象)开始触发，然后到最精确</p>
+<p>事件从最上一级标签开始往下查找，直到捕获到事件目标(target)。</p>
+<h1 id="DOM事件流"><a href="#DOM事件流" class="headerlink" title="DOM事件流"></a>DOM事件流</h1><p>同时支持两种事件模型：捕获型事件和冒泡型事件，但是，捕获型事件先发生。两种事件流会触及DOM中的所有对象，从document对象开始，也在document对象结束<br><img src="http://files.jb51.net/file_images/article/201310/20131028160201571.jpg" alt=""></p>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>IE浏览器只支持事件冒泡，不支持事件捕获，它也不支持addEventListener函数，不会用第三个参数来表示是冒泡还是捕获，它提供了另一个函数attachEvent。</p>
+<pre><code>ele.addEventListener(&apos;click&apos;,doSomething2,true)
+
+true=捕获
+
+false=冒泡
+</code></pre><h1 id="阻止事件冒泡和捕获"><a href="#阻止事件冒泡和捕获" class="headerlink" title="阻止事件冒泡和捕获"></a>阻止事件冒泡和捕获</h1><ol>
+<li><p>在除IE以外其他的浏览器中通过e.stopPropagation()方式阻止事件的冒泡。在 支持该方法的浏览器中还有一个方法stopimmediatePropagation()，该方法不仅会组织事件向祖元素的冒泡，同时也会阻止同一个节点 上同一事件的其他的事件处理程序的执行，该方法比前者阻止的更彻底。</p>
+</li>
+<li><p>在IE浏览器中通过e.cancleBubble=true,阻止事件冒泡。</p>
+</li>
+</ol>
+<h1 id="事件代理"><a href="#事件代理" class="headerlink" title="事件代理"></a>事件代理</h1><p>又称事件委托，就是利用事件冒泡，只指定一个事件处理程序，就可以管理某一类型的所有事件。</p>
+<p>##为什么会使用事件代理/委托</p>
+<p>一般来说，dom需要有事件处理程序，我们都会直接给它设事件处理程序就好了，那如果是很多的dom需要添加事件处理呢？比如我们有100个li，每个li都有相同的click点击事件，可能我们会用for循环的方法，来遍历所有的li，然后给它们添加事件，那这么做会存在什么影响呢？</p>
+<p>在JavaScript中，添加到页面上的事件处理程序数量将直接关系到页面的整体运行性能，因为需要不断的与dom节点进行交互，访问dom的次数越多，引起浏览器重绘与重排的次数也就越多，就会延长整个页面的交互就绪时间，这就是为什么性能优化的主要思想之一就是减少DOM操作的原因；如果要用事件委托，就会将所有的操作放到js程序里面，与dom的操作就只需要交互一次，这样就能大大的减少与dom的交互次数，提高性能；</p>
+<p>每个函数都是一个对象，是对象就会占用内存，对象越多，内存占用率就越大，自然性能就越差了（内存不够用，是硬伤，哈哈），比如上面的100个li，就要占用100个内存空间，如果是1000个，10000个呢，那只能说呵呵了，如果用事件委托，那么我们就可以只对它的父级（如果只有一个父级）这一个对象进行操作，这样我们就需要一个内存空间就够了，是不是省了很多，自然性能就会更好。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> JS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript_事件 </tag>
             
         </tags>
         
@@ -68,6 +197,38 @@ console.log(isChrome);
         <categories>
             
             <category> JS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> BOM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[将url附带的参数转换为对象返回]]></title>
+      <url>/2017/08/03/%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%B9%E6%B3%95%EF%BC%9A%E5%B0%86url%E9%99%84%E5%B8%A6%E7%9A%84%E5%8F%82%E6%95%B0%E8%BD%AC%E6%8D%A2%E4%B8%BA%E5%AF%B9%E8%B1%A1%E8%BF%94%E5%9B%9Emd/</url>
+      <content type="html"><![CDATA[<p>面试题：有一个页面，url为’<a href="http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回" target="_blank" rel="external">http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回</a></p>
+<pre><code>function getParamObj(url){
+    var startIndex =url.indexOf(&apos;?&apos;)+1;
+    var subParam=url.substring(startIndex,url.length);
+    var arrParam=subParam.split(&apos;&amp;&apos;);
+    var objParam=new Object();//注意：初始化一个对象
+    for(var i=0;i&lt;arrParam.length;i++){
+        var arrSingle=arrParam[i].split(&apos;=&apos;);
+        objParam[arrSingle[0]]=arrSingle[1];//注意：对象属性的赋值方法obj[key]=value
+    }
+    return objParam;
+}
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> 前端小例子 </category>
             
         </categories>
         

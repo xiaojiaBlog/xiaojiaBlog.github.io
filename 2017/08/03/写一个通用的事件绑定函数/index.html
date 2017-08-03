@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>将url附带的参数转换为对象返回 | Xiao Jia&#39;Blog</title>
+  <title>写一个通用的事件绑定函数 | Xiao Jia&#39;Blog</title>
   <meta name="author" content="Xiao Jia">
   
   <meta name="description" content="分享的总结心得~">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="将url附带的参数转换为对象返回"/>
+  <meta property="og:title" content="写一个通用的事件绑定函数"/>
   <meta property="og:site_name" content="Xiao Jia&#39;Blog"/>
 
   
@@ -45,7 +45,7 @@
   <div class="container" id="container">
 	<div class="content">
 	  <div class="page-header">		
-  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">将url附带的参数转换为对象返回</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-03</span></h1>
+  <h1><a class="brand" href="/">Xiao Jia&#39;Blog</a><span class="split"></span><span class="title">写一个通用的事件绑定函数</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2017-08-03</span></h1>
 </div>		
 
 <div class="row page">
@@ -58,18 +58,66 @@
 	  
 
 	  <!-- content -->
-	  <p>面试题：有一个页面，url为’<a href="http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回" target="_blank" rel="external">http://qq.com?pet=cat&amp;age=2&amp;like=fish&#39;,设计一个函数将url附带的参数转换为对象返回</a></p>
-<pre><code>function getParamObj(url){
-    var startIndex =url.indexOf(&apos;?&apos;)+1;
-    var subParam=url.substring(startIndex,url.length);
-    var arrParam=subParam.split(&apos;&amp;&apos;);
-    var objParam=new Object();//注意：初始化一个对象
-    for(var i=0;i&lt;arrParam.length;i++){
-        var arrSingle=arrParam[i].split(&apos;=&apos;);
-        objParam[arrSingle[0]]=arrSingle[1];//注意：对象属性的赋值方法obj[key]=value
-    }
-    return objParam;
-}
+	  <p>写一个可以给标签直接绑定事件，并且还可以实现事件代理时的事件绑定的方法</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;title&gt;写一个通用的事件绑定函数&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;div1&quot;&gt;
+        &lt;a href=&quot;#&quot; id=&quot;imooc1&quot;&gt;imooc1&lt;/a&gt;
+        &lt;a href=&quot;http://imooc.com&quot; id=&quot;imooc2&quot;&gt;imooc2&lt;/a&gt;
+        &lt;a href=&quot;http://imooc.com&quot; id=&quot;imooc3&quot;&gt;imooc3&lt;/a&gt;
+        &lt;a href=&quot;http://imooc.com&quot; id=&quot;imooc4&quot;&gt;imooc4&lt;/a&gt;
+        &lt;a href=&quot;http://imooc.com&quot; id=&quot;imooc5&quot;&gt;imooc5&lt;/a&gt;
+        &lt;p id=&quot;p1&quot;&gt;激活&lt;/p&gt;
+        &lt;p id=&quot;p2&quot;&gt;取消&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;!-- &lt;div id=&quot;div2&quot;&gt;
+        &lt;p id=&quot;p3&quot;&gt;取消&lt;/p&gt;
+        &lt;p id=&quot;p4&quot;&gt;取消&lt;/p&gt;
+    &lt;/div&gt; --&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        function bindEvent(elem,type,selector,fn){
+            if(fn==null){
+                fn=selector;
+                selector=null;
+            }
+            elem.addEventListener(type,function(e){
+                if(selector){//代理
+                    target=e.target;
+                    if(target.matches(selector)){
+                        fn.call(target,e);
+                    }
+                }else{
+                    fn(e);
+                }
+            });
+        }
+
+        //调用
+        //有代理的：点击哪个链接，显示哪个链接的内容
+        var div1=document.getElementById(&quot;div1&quot;);
+        bindEvent(div1,&apos;click&apos;,&apos;a&apos;,function(e){
+            e.preventDefault();//阻止默认行为
+            alert(this.innerHTML);
+        });
+
+        //没有代理的：点击id为p1的标签，显示&quot;激活&quot;
+        var p1=document.getElementById(&quot;p1&quot;);
+        bindEvent(p1,&apos;click&apos;,function(e){
+            e.stopPropagation();//阻止默认行为
+            e.cancleBubble=true;
+            alert(&quot;激活&quot;);
+        });
+
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </code></pre>	  
 
 	  <div>
@@ -84,18 +132,6 @@
 	
 		
 			
-		
-	
-		
-			
-		
-	
-		
-	
-		
-	
-		
-			
 			
 		
 	
@@ -103,6 +139,8 @@
 			
 			
 			
+		
+	
 		
 	
 		
@@ -116,7 +154,11 @@
 		
 	
 		
+			
+		
 	
+		
+			
 		
 	
 		
@@ -127,13 +169,19 @@
 	
 		
 	
+		
+	
+		
+	
+		
 	
 	
-		<li class="prev"><a href="/2017/08/03/写一个能兼容ie事件绑定的方法/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+		<li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
 	
 	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
 	
-		<li class="next"><a href="/2017/08/02/使用createDocumentFragment()/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		<li class="next"><a href="/2017/08/03/写一个能兼容ie事件绑定的方法/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
 	
 </ul>
 </div>
